@@ -1,0 +1,23 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model user {
+  id       Int      @id @default(autoincrement())
+  username String   @unique
+  password String
+  created  DateTime @default(now())
+  updated  DateTime @default(now())
+  admin    Boolean  @default(false)
+}
+
+// sobald hier Änderungen vorgenommen werden, muss folgendes ausgeführt werden:
+// npx prisma migrate dev
