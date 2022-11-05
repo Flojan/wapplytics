@@ -25,10 +25,11 @@ export const authOptions = {
         if (!isValid) {
           throw new Error("Invalid password");
         }
-        return user;
+        return { name: user.username };
       },
     }),
   ],
+  // secret: "secret",
   pages: {
     signIn: "/login",
   },
