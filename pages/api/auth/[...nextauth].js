@@ -6,7 +6,7 @@ import prisma from "../../../utils/prismadb";
 export const authOptions = {
   session: {
     strategy: "jwt",
-    maxAge: 60 * 60 * 24 * 7, // 7 days
+    maxAge: 60 * 60 * 24 * 1, // 1 days
   },
   providers: [
     CredentialsProvider({
@@ -25,13 +25,27 @@ export const authOptions = {
         if (!isValid) {
           throw new Error("Invalid password");
         }
-        return { name: user.username };
+        return { username: user.username, admin: user.admin };
       },
     }),
   ],
-  // secret: "secret",
+  secret: process.env.NEXTAUTH_SECRET,
   pages: {
     signIn: "/login",
+  },
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.username = user.username;
+        token.admin = user.admin;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      session.user.username = token.username;
+      session.user.admin = token.admin;
+      return session;
+    },
   },
 };
 

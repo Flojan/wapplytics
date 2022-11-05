@@ -111,7 +111,7 @@ function Navigation() {
               />
             </svg>
 
-            <div className="flex items-center">{data.user.name}</div>
+            <div className="flex items-center">{data.user.username}</div>
           </div>
         </Link>
       </div>
