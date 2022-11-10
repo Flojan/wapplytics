@@ -1,11 +1,18 @@
-import { useSession } from "next-auth/react";
+import { Fragment, useEffect } from "react";
 import Head from "next/head";
-import { Fragment } from "react";
+import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import Navigation from "./navigation";
 
 function Layout(props) {
   const { status } = useSession();
-  console.log(status);
+  const router = useRouter();
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.replace("/login");
+    }
+  }, [status]);
+
   return (
     <Fragment>
       <Head>

@@ -1,11 +1,12 @@
-import { signOut, useSession } from "next-auth/react";
+import { Fragment, useContext } from "react";
 import Link from "next/link";
-import { useContext } from "react";
+import { signOut, useSession } from "next-auth/react";
+import { Menu, Transition, Disclosure } from "@headlessui/react";
 import ThemeContext from "../utils/context";
 
 function Navigation() {
   const ctx = useContext(ThemeContext);
-  const { status, data } = useSession();
+  const { data } = useSession();
 
   return (
     <div
@@ -19,9 +20,9 @@ function Navigation() {
           </Link>
         </div>
         <nav className="pt-6 pl-4 ">
-          <ul className="relative text-lg space-y-6">
-            <Link href="#" className="">
-              <li className="relative flex space-x-4">
+          <ul className="relative text-lg space-y-4">
+            <li className="">
+              <Link href="/" className="flex space-x-4 items-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -37,8 +38,90 @@ function Navigation() {
                   />
                 </svg>
                 <span>Übersicht</span>
-              </li>
-            </Link>
+              </Link>
+            </li>
+            <li className="">
+              <Disclosure>
+                <Disclosure.Button className="flex space-x-4 items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                    <path
+                      fillRule="evenodd"
+                      d="M2.25 5.25a3 3 0 013-3h13.5a3 3 0 013 3V15a3 3 0 01-3 3h-3v.257c0 .597.237 1.17.659 1.591l.621.622a.75.75 0 01-.53 1.28h-9a.75.75 0 01-.53-1.28l.621-.622a2.25 2.25 0 00.659-1.59V18h-3a3 3 0 01-3-3V5.25zm1.5 0v7.5a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5v-7.5a1.5 1.5 0 00-1.5-1.5H5.25a1.5 1.5 0 00-1.5 1.5z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <span>Websites</span>
+                </Disclosure.Button>
+                <Transition
+                  enter="transition duration-100 ease-out"
+                  enterFrom="transform scale-95 opacity-0"
+                  enterTo="transform scale-100 opacity-100"
+                  leave="transition duration-75 ease-out"
+                  leaveFrom="transform scale-100 opacity-100"
+                  leaveTo="transform scale-95 opacity-0"
+                >
+                  <Disclosure.Panel as="ul">
+                    <li className="">
+                      <Link href="#website1" className="flex items-center text-xs py-4 pl-12 h-6 overflow-hidden rounded">
+                        Website 1
+                      </Link>
+                    </li>
+                    <li className="">
+                      <Link href="#website2" className="flex items-center text-xs py-4 pl-12 h-6 overflow-hidden rounded">
+                        Website 2
+                      </Link>
+                    </li>
+                  </Disclosure.Panel>
+                </Transition>
+              </Disclosure>
+            </li>
+            <li className="">
+              <Disclosure>
+                <Disclosure.Button className="flex space-x-4 items-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="w-6 h-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75"
+                    />
+                  </svg>
+                  <span className="">Einstellungen</span>
+                </Disclosure.Button>
+                <Transition
+                  enter="transition duration-100 ease-out"
+                  enterFrom="transform scale-95 opacity-0"
+                  enterTo="transform scale-100 opacity-100"
+                  leave="transition duration-75 ease-out"
+                  leaveFrom="transform scale-100 opacity-100"
+                  leaveTo="transform scale-95 opacity-0"
+                >
+                  <Disclosure.Panel as="ul">
+                    <li className="">
+                      <Link href="#websites" className="flex items-center text-xs py-4 pl-12 h-6 overflow-hidden rounded">
+                        Websites
+                      </Link>
+                    </li>
+                    <li className="">
+                      <Link href="/settings/users" className="flex items-center text-xs py-4 pl-12 h-6 overflow-hidden rounded">
+                        Nutzerverwaltung
+                      </Link>
+                    </li>
+                    <li className="">
+                      <Link href="#profile" className="flex items-center text-xs py-4 pl-12 h-6 overflow-hidden rounded">
+                        Profil
+                      </Link>
+                    </li>
+                  </Disclosure.Panel>
+                </Transition>
+              </Disclosure>
+            </li>
           </ul>
         </nav>
       </div>
@@ -60,22 +143,60 @@ function Navigation() {
               />
             </svg>
           </button>
-          <button className="">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-6 h-6"
+          <Menu as="div" className="relative inline-block text-left">
+            <div>
+              <Menu.Button className="flex items-center space-x-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-6 h-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M10.5 21l5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 016-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C11.176 10.658 7.69 15.08 3 17.502m9.334-12.138c.896.061 1.785.147 2.666.257m-4.589 8.495a18.023 18.023 0 01-3.827-5.802"
+                  />
+                </svg>
+              </Menu.Button>
+            </div>
+            <Transition
+              as={Fragment}
+              enter="transition ease-out duration-100"
+              enterFrom="transform opacity-0 scale-95"
+              enterTo="transform opacity-100 scale-100"
+              leave="transition ease-in duration-75"
+              leaveFrom="transform opacity-100 scale-100"
+              leaveTo="transform opacity-0 scale-95"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M10.5 21l5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 016-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C11.176 10.658 7.69 15.08 3 17.502m9.334-12.138c.896.061 1.785.147 2.666.257m-4.589 8.495a18.023 18.023 0 01-3.827-5.802"
-              />
-            </svg>
-          </button>
+              <Menu.Items className="absolute z-10 left-0 w-40 bottom-8 origin-top-right bg-white dark:bg-black divide-y divide-gray-200 rounded-md shadow-lg ring-1 ring-black dark:ring-white ring-opacity-5 focus:outline-none">
+                <div className="py-1 ">
+                  <Menu.Item>
+                    {({ active }) => (
+                      <Link legacyBehavior={false} href="/">
+                        <button className={(active ? "bg-gray-100 text-gray-900" : "text-gray-700", "block px-4 py-2 text-sm")}>
+                          deutsch
+                        </button>
+                      </Link>
+                    )}
+                  </Menu.Item>
+                </div>
+                <div className="py-1">
+                  <Menu.Item>
+                    {({ active }) => (
+                      <Link legacyBehavior={false} href="/">
+                        <button className={(active ? "bg-gray-100 text-gray-900" : "text-gray-700", "block px-4 py-2 text-sm")}>
+                          englisch
+                        </button>
+                      </Link>
+                    )}
+                  </Menu.Item>
+                </div>
+              </Menu.Items>
+            </Transition>
+          </Menu>
           <button onClick={() => signOut({ redirect: false, callbackUrl: "/login" })} className="">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -94,8 +215,8 @@ function Navigation() {
           </button>
         </div>
 
-        <Link href="#" className="">
-          <div className="relative flex items-center pl-4 space-x-4 text-lg h-16">
+        <Link href="#profile" className="">
+          <div className="flex items-center pl-4 space-x-4 text-lg h-16">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

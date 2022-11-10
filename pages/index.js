@@ -1,19 +1,8 @@
-import { useSession } from "next-auth/react";
 import Head from "next/head";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useSession } from "next-auth/react";
 
 export default function Home() {
-  const { status, data } = useSession();
-  const session = useSession();
-  const router = useRouter();
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      router.replace("/login");
-    }
-  }, [status, router]);
-
-  console.log(session);
+  const { status } = useSession();
 
   if (status === "authenticated") {
     return (
