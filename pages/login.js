@@ -2,8 +2,10 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import Loginform from "../components/loginform";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
-export default function Login() {
+/** @param {import('next').InferGetStaticPropsType<typeof getStaticProps> } props */
+export default function Login(props) {
   const { status } = useSession();
   const router = useRouter();
   useEffect(() => {
@@ -20,3 +22,9 @@ export default function Login() {
     </div>
   );
 }
+
+export const getStaticProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale, ["common"])),
+  },
+});

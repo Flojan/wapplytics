@@ -2,11 +2,13 @@ import { Fragment, useContext } from "react";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import { Menu, Transition, Disclosure } from "@headlessui/react";
-import ThemeContext from "../utils/context";
+import ThemeContext from "../../utils/context";
+import { useRouter } from "next/router";
 
 function Navigation() {
   const ctx = useContext(ThemeContext);
   const { data } = useSession();
+  const router = useRouter();
 
   return (
     <div
@@ -175,7 +177,7 @@ function Navigation() {
                 <div className="py-1 ">
                   <Menu.Item>
                     {({ active }) => (
-                      <Link legacyBehavior={false} href="/">
+                      <Link legacyBehavior={false} href="/" locale={(router.locale = "de")}>
                         <button className={(active ? "bg-gray-100 text-gray-900" : "text-gray-700", "block px-4 py-2 text-sm")}>
                           deutsch
                         </button>
@@ -186,7 +188,7 @@ function Navigation() {
                 <div className="py-1">
                   <Menu.Item>
                     {({ active }) => (
-                      <Link legacyBehavior={false} href="/">
+                      <Link legacyBehavior={false} href="/" locale={(router.locale = "en")}>
                         <button className={(active ? "bg-gray-100 text-gray-900" : "text-gray-700", "block px-4 py-2 text-sm")}>
                           englisch
                         </button>

@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
-export function Users() {
+/** @param {import('next').InferGetStaticPropsType<typeof getStaticProps> } props */
+export function Users(props) {
   const { status, data } = useSession();
   const [isLoading, setLoading] = useState(false);
   const [toggle, setToggle] = useState(false);
@@ -44,7 +46,7 @@ export function Users() {
   if (status === "authenticated" && data.user.admin) {
     return (
       <div className="flex">
-        <button onClick={() => createUser("asdf", "test", false)}>Create User</button>
+        <button onClick={() => createUser("florian", "test", true)}>Create User</button>
         <div className="w-full h-screen max-w-md space-y-8">
           <ul>
             {users.map((user) => (
@@ -63,3 +65,9 @@ export default Users;
 
 // https://www.prisma.io/nextjs
 // https://www.prisma.io/client
+
+export const getStaticProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale, ["common"])),
+  },
+});
