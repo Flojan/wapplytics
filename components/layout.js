@@ -2,7 +2,7 @@ import { Fragment, useEffect } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import Navigation from "./organisms/navigation";
+import Navigation from "./organisms/Navigation";
 
 function Layout(props) {
   const { status } = useSession();
@@ -19,11 +19,15 @@ function Layout(props) {
         <title>Wapplytics – Website Analyse</title>
       </Head>
       {status === "authenticated" && (
-        <header>
+        <aside className="font-questa-medium">
           <Navigation />
-        </header>
+        </aside>
       )}
-      <main className={`${status === "authenticated" ? "ml-60 " : "ml-0 "}` + "bg-white dark:bg-black text-black dark:text-white"}>
+      <main
+        className={
+          `${status === "authenticated" ? "ml-60 " : "ml-0 "}` + "bg-white dark:bg-black text-black dark:text-white font-questa-regular"
+        }
+      >
         {props.children}
       </main>
     </Fragment>

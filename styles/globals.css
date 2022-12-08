@@ -1,3 +1,47 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.text-elem {
+    @apply dark:text-white text-black !important;
+}
+
+.recharts-tooltip-cursor {
+    @apply dark:fill-white fill-black !important;
+}
+
+.tr-bg-white {
+    @apply dark:bg-black bg-white !important;
+}
+
+@layer base {
+    text {
+        @apply dark:fill-white fill-black;
+    }
+    g path {
+        @apply dark:fill-white fill-black;
+    }
+    circle {
+        @apply dark:fill-white fill-black;
+    }
+}
+
+@font-face {
+    font-family: "Questa Sans Regular";
+    src: url("../public/fonts/QuestaSans-Regular.otf");
+}
+
+@font-face {
+    font-family: "Questa Sans Medium";
+    src: url("../public/fonts/QuestaSans-Medium.otf");
+}
+
+@font-face {
+    font-family: "Questa Sans Bold";
+    src: url("../public/fonts/QuestaSans-Bold.otf");
+}
+
+@font-face {
+    font-family: "Questa Sans Black";
+    src: url("../public/fonts/QuestaSans-Black.otf");
+}

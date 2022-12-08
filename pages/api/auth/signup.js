@@ -1,4 +1,5 @@
 import { hashPassword } from "../../../utils/auth";
+import { getUsers } from "../../../utils/dbqueries";
 import prisma from "../../../utils/prismadb";
 
 export default async function handler(req, res) {
@@ -30,7 +31,8 @@ export default async function handler(req, res) {
     });
     res.status(200).json({ message: "User created" });
   } else if (req.method === "GET") {
-    const users = await prisma.user.findMany();
+    const users = await getUsers();
+    // const users = await prisma.user.findMany();
     res.json(users);
   }
 }

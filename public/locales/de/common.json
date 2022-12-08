@@ -1,3 +1,34 @@
 {
-    "test": "Test DE"
+    "test": "Test DE",
+    "loading": "Laden ...",
+    "navigation": {
+        "overview": "Übersicht",
+        "websites": "Websites",
+        "settings": "Einstellungen",
+        "user_manage": "Nutzerverwaltung",
+        "profile": "Profil"
+    },
+    "languages": {
+        "de": "deutsch",
+        "en": "englisch"
+    },
+    "login": {
+        "username": "Benutzername",
+        "password": "Passwort",
+        "signin": "Anmelden"
+    },
+    "barchart": {
+        "january": "Januar",
+        "february": "Februar",
+        "march": "März",
+        "april": "April",
+        "may": "Mai",
+        "june": "Juni",
+        "july": "Juli",
+        "august": "August",
+        "september": "September",
+        "october": "Oktober",
+        "november": "November",
+        "december": "Dezember"
+    }
 }

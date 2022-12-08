@@ -3,6 +3,8 @@ import { useSession } from "next-auth/react";
 import { generateUUID } from "../utils/id";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "react-i18next";
+import Loading from "../components/molecule/Loading";
+import Chart from "../components/molecule/Chart";
 
 /** @param {import('next').InferGetStaticPropsType<typeof getStaticProps> } props */
 export default function Home(props) {
@@ -12,15 +14,16 @@ export default function Home(props) {
 
   if (status === "authenticated") {
     return (
-      <div className="min-h-screen flex justify-center items-center">
+      <div className="min-h-screen">
         <Head></Head>
-        <main>
-          <h1 className="text-7xl font-bold underline">{t("test")}</h1>
+        <main className="p-10">
+          <h1 className="text-7xl font-bold underline">{t("navigation.overview")}</h1>
+          <Chart />
         </main>
       </div>
     );
   }
-  return <div>Loading...</div>;
+  return <Loading />;
 }
 
 export const getStaticProps = async ({ locale }) => ({

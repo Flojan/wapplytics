@@ -1,4 +1,5 @@
 import "../styles/globals.css";
+import "@tremor/react/dist/esm/tremor.css";
 import { SessionProvider } from "next-auth/react";
 import Layout from "../components/layout";
 import { ThemeContextProvider } from "../utils/context";

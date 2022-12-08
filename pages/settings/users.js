@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import Loading from "../../components/molecule/Loading";
 
 /** @param {import('next').InferGetStaticPropsType<typeof getStaticProps> } props */
 export function Users(props) {
@@ -11,6 +12,7 @@ export function Users(props) {
 
   useEffect(() => {
     setLoading(true);
+
     fetch("/api/auth/signup", {
       method: "GET",
       headers: {
@@ -23,7 +25,7 @@ export function Users(props) {
         setLoading(false);
       });
   }, [toggle]);
-  if (isLoading) return <div className="h-screen">Loading...</div>;
+  if (isLoading) return <Loading />;
   if (!users) return <div className="h-screen">No profile data</div>;
 
   console.log(users);
