@@ -3,7 +3,7 @@
   const {
     document: { referrer },
     location: { host, pathname },
-    navigator: { language, platform, userAgent },
+    navigator: { language, platform, userAgent, maxTouchPoints, msMaxTouchPoints },
     screen: { width, height },
   } = window;
   const script = window.document.querySelector("script[data-identifier]");
@@ -16,8 +16,9 @@
   const sendData = () => {
     const data = {
       userAgent: userAgent,
+      touchpoints: { maxTouchPoints, msMaxTouchPoints },
       os: platform,
-      screen: `${width}x${height}`,
+      screen: { width, height },
       language: language,
       referrer: referrer,
       website: host,

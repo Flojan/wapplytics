@@ -1,42 +1,33 @@
-import cors from "cors";
 import NextCors from "nextjs-cors";
-import { getWebsiteByNanoID, websiteValidationCheck } from "../../services/VerifyData";
+import {
+  anonymizeIP,
+  createSession,
+  createView,
+  generateUUID,
+  getRequestIP,
+  getWebsiteByNanoID,
+  sessionExists,
+  websiteValidationCheck,
+} from "../../services/VerifyData";
 
 export default async function handler(req, res) {
+  // CORS aktivieren
   await NextCors(req, res, {
     origin: true,
   });
-  res.status(200).json({ data: req.body });
   const data = req.body;
-  console.log("DATA:", data);
-  console.log(await websiteValidationCheck(data.identifier, data.website));
+  data.dbwebsite = await getWebsiteByNanoID(data.identifier);
+  if (!(await websiteValidationCheck(data.dbwebsite, data.website))) return console.log("Invalid website"); // Website ist nicht valid, bricht also ab
+
+  // da aktuell nur der Localhost zurückgegeben wird, wird eine Bespiel IP-Adresse des Clients manuell gesetzt
+  const clientIP = getRequestIP(req);
+  const clientIPv4 = "185.209.196.17";
+  const clientIPv6 = "2a03:1b20:6:f011::a02e";
+
+  data.anonymizedIP = anonymizeIP(clientIPv4);
+  data.sessionUUID = generateUUID(data.dbwebsite.website_id + data.anonymizedIP + data.referrer + data.userAgent);
+  data.session = await sessionExists(data.sessionUUID);
+  data.session ? await createView(data) : await createSession(data);
+
+  res.status(200).json({ data: req.body });
 }
-
-// const getWebsiteOrigin = async (data) => {
-//   console.log("DATA:", data.identifier);
-//   return await getWebsiteByNanoID(data);
-// };
-
-// export default async function handler(req, res) {
-//   const corsOptions = { origin: true, optionsSuccessStatus: 200 };
-//   cors(corsOptions)(req, res, () => {
-//     res.status(200).json({ data: req.body });
-//   });
-//   const data = req.body;
-
-//   const website = await getWebsiteOrigin(data);
-//   console.log("WEBSITE:", website?.website_url);
-// }
-
-// const test = {
-//   data: {
-//     userAgent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36",
-//     os: "MacIntel",
-//     screen: "2560x1440",
-//     language: "en-GB",
-//     referrer: "https://rollendepizzeria.local:8890/administrator/index.php?option=com_cache",
-//     website: "rollendepizzeria.local",
-//     path: "/",
-//     identifier: "iXgU8_PsfF",
-//   },
-// };
