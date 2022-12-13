@@ -10,8 +10,11 @@
     @apply dark:fill-white fill-black !important;
 }
 
-.tr-bg-white {
+.tr-bg-white{
     @apply dark:bg-black bg-white !important;
+}
+.tr-rounded-full {
+    @apply dark:bg-white bg-black !important;
 }
 
 @layer base {
@@ -22,7 +25,7 @@
         @apply dark:fill-white fill-black;
     }
     circle {
-        @apply dark:fill-white fill-black;
+        @apply dark:fill-white fill-black;   
     }
 }
 

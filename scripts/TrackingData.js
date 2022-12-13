@@ -37,6 +37,5 @@
       mode: "cors",
     });
   };
-  // CORS Serverseitig aktivieren Cross-Origin Requests
   sendData();
 })(window);

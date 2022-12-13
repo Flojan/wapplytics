@@ -1,9 +1,8 @@
 import client from "../utils/prismadb";
 import requestIp from "request-ip";
 import { v5 } from "uuid";
-import dayjs from "dayjs";
-import weekOfYear from "dayjs/plugin/weekOfYear";
 import maxmind from "maxmind";
+import { DateTime } from "luxon";
 
 export const getWebsiteByNanoID = async (identifier) => {
   return await client.website
@@ -34,9 +33,8 @@ export const getRequestIP = (req) => {
 // Seed besteht aus: WebsiteID + gekürzte IP-Adresse + Referrer + UserAgent +
 // Hier kommt dazu: Gültigkeitsjahr + aktuelle Kalenderwoche + 10 Zeichen des Secrets
 export function generateUUID(seed) {
-  dayjs.extend(weekOfYear);
   const secret = process.env.NEXTAUTH_SECRET?.slice(0, 10);
-  const date = dayjs().year().toString() + dayjs(new Date()).week().toString();
+  const date = DateTime.now().year.toString() + DateTime.now().weekNumber.toString();
   return v5(seed.concat(date).concat(secret), v5.DNS);
 }
 

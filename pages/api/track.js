@@ -29,5 +29,5 @@ export default async function handler(req, res) {
   data.session = await sessionExists(data.sessionUUID);
   data.session ? await createView(data) : await createSession(data);
 
-  res.status(200).json({ data: req.body });
+  res.status(200).json({ message: "OK" });
 }

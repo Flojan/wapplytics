@@ -10,20 +10,36 @@ export function Users(props) {
   const [toggle, setToggle] = useState(false);
   const [users, setUsers] = useState(null);
 
-  useEffect(() => {
-    setLoading(true);
-
-    fetch("/api/auth/signup", {
+  const getUsers = async () => {
+    const res = await fetch("/api/auth/signup", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
-    })
-      .then((res) => res.json())
-      .then((userData) => {
-        setUsers(userData);
-        setLoading(false);
-      });
+    });
+    const data = await res.json();
+    setUsers(data);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    setLoading(true);
+
+    (async () => {
+      await getUsers();
+    })();
+
+    // fetch("/api/auth/signup", {
+    //   method: "GET",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    // })
+    //   .then((res) => res.json())
+    //   .then((userData) => {
+    //     setUsers(userData);
+    //     setLoading(false);
+    //   });
   }, [toggle]);
   if (isLoading) return <Loading />;
   if (!users) return <div className="h-screen">No profile data</div>;
@@ -48,7 +64,7 @@ export function Users(props) {
   if (status === "authenticated" && data.user.admin) {
     return (
       <div className="flex">
-        <button onClick={() => createUser("florian", "test", true)}>Create User</button>
+        <button onClick={() => createUser("milkboy", "test", true)}>Create User</button>
         <div className="w-full h-screen max-w-md space-y-8">
           <ul>
             {users.map((user) => (

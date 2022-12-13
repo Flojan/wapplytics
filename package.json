@@ -7,9 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "generate-tracker": "uglifyjs ./services/TrackingData.js --compress --mangle --output ./public/wapplytics.js",
+    "generate-tracker": "uglifyjs ./scripts/TrackingData.js --compress --mangle --output ./public/wapplytics.js",
     "geoip-lookup-preload": "node -e \"import('geolite2-redist').then(geolite => geolite.downloadDbs())\""
-
   },
   "dependencies": {
     "@faker-js/faker": "^7.6.0",
@@ -18,9 +17,9 @@
     "@prisma/client": "^4.7.1",
     "@tremor/react": "^1.2.2",
     "argon2": "^0.30.1",
-    "dayjs": "^1.11.6",
     "geolite2-redist": "^3.0.4",
     "i18next": "^22.0.6",
+    "luxon": "^3.1.1",
     "maxmind": "^4.3.8",
     "next": "13.0.3",
     "next-auth": "^4.15.0",
