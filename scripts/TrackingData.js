@@ -25,7 +25,6 @@
       path: pathname,
       identifier: script.dataset.identifier,
     };
-    console.log("Data:", data);
     const wapplytics = new URL(script.src).origin;
     const api = "/api/track";
     fetch(wapplytics + api, {
