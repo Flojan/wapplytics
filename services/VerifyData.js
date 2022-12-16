@@ -11,7 +11,7 @@ export const getWebsiteByNanoID = async (identifier) => {
         website_nanoid: identifier,
       },
       select: {
-        website_id: true,
+        id: true,
         website_url: true,
       },
     })
@@ -48,6 +48,11 @@ export const anonymizeIP = (ip) => {
   }
 };
 
+export const filterReferrer = (referrer, website) => {
+  if (referrer.includes(website)) return "";
+  return referrer;
+};
+
 export const sessionExists = async (uuid) => {
   return await client.session
     .findUnique({
@@ -55,7 +60,7 @@ export const sessionExists = async (uuid) => {
         session_uuid: uuid,
       },
       select: {
-        session_id: true,
+        id: true,
       },
     })
     .catch((e) => {
@@ -64,18 +69,32 @@ export const sessionExists = async (uuid) => {
 };
 
 export const createView = async (data, session_id = null) => {
-  return await client.view
+  const view = await client.view
     .create({
       data: {
-        session_id: session_id ? session_id : data.session.session_id,
-        website_id: data.dbwebsite.website_id,
+        session_id: session_id ? session_id : data.session.id,
+        website_id: data.dbwebsite.id,
         path: data.path,
-        referrer: data.referrer,
       },
     })
     .catch((e) => {
       console.log("ERROR", e);
     });
+  if (view) {
+    await client.session
+      .update({
+        where: {
+          id: session_id ? session_id : data.session.id,
+        },
+        data: {
+          updated: new Date(),
+        },
+      })
+      .catch((e) => {
+        console.log("ERROR", e);
+      });
+  }
+  return view;
 };
 
 export const createSession = async (data) => {
@@ -83,7 +102,7 @@ export const createSession = async (data) => {
     .create({
       data: {
         session_uuid: data.sessionUUID,
-        website_id: data.dbwebsite.website_id,
+        website_id: data.dbwebsite.id,
         website_url: data.website,
         language: data.language,
         country: await getCountryByIP(data.anonymizedIP),
@@ -91,12 +110,13 @@ export const createSession = async (data) => {
         os: data.os,
         device: getDevice(data.userAgent, data.os, data.touchpoints, data.screen.width),
         screen: `${data.screen.width}x${data.screen.height}`,
+        referrer: data.referrer,
       },
     })
     .catch((e) => {
       console.log("ERROR", e);
     });
-  await createView(data, session.session_id);
+  await createView(data, session.id);
   return session;
 };
 
@@ -114,10 +134,12 @@ const getCountryByIP = async (ip) => {
 };
 
 const getBrowserByUA = (userAgent) => {
-  if ((userAgent.indexOf("Opera") || userAgent.indexOf("OPR")) !== -1) return "Opera";
-  if (userAgent.indexOf("Chrome") != -1) return "Chrome";
-  if (userAgent.indexOf("Safari") != -1) return "Safari";
-  if (userAgent.indexOf("Firefox") != -1) return "Firefox";
+  if (userAgent.includes("Opera") || userAgent.includes("OPR")) return "Opera";
+  if (userAgent.includes("Vivaldi")) return "Vivaldi";
+  if (userAgent.includes("Edg")) return "Edge";
+  if (userAgent.includes("Chrome")) return "Chrome";
+  if (userAgent.includes("Safari")) return "Safari";
+  if (userAgent.includes("Firefox")) return "Firefox";
   return "Others";
 };
 

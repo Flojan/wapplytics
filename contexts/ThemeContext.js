@@ -31,12 +31,12 @@ export function ThemeContextProvider(props) {
     }
   }
 
-  const context = {
+  const themeCtx = {
     theme: theme,
     toggleTheme: toggleThemeHandler,
   };
 
-  return <ThemeContext.Provider value={context}>{props.children}</ThemeContext.Provider>;
+  return <ThemeContext.Provider value={themeCtx}>{props.children}</ThemeContext.Provider>;
 }
 
 export default ThemeContext;

@@ -17,7 +17,7 @@
         "password": "Passwort",
         "signin": "Anmelden"
     },
-    "barchart": {
+    "charts": {
         "january": "Januar",
         "february": "Februar",
         "march": "März",
@@ -29,6 +29,26 @@
         "september": "September",
         "october": "Oktober",
         "november": "November",
-        "december": "Dezember"
-    }
+        "december": "Dezember",
+        "mon": "Mo. ",
+        "tue": "Di. ",
+        "wed": "Mi. ",
+        "thu": "Do. ",
+        "fri": "Fr. ",
+        "sat": "Sa. ",
+        "sun": "So. ",
+        "view": "Aufrufe",
+        "unique-user": "Nutzer",
+        "bounce-rate": "Absprungrate",
+        "avg-visit-time": "Durchschn. Verweildauer",
+        "path": "Nutzerpfade",
+        "language": "Sprachen",
+        "country": "Standorte",
+        "device": "Geräte Details",
+        "browser": "Browser",
+        "os": "Betriebssysteme",
+        "screen": "Auflösungen",
+        "referrer": "Traffic Quellen",
+        "goal": "Ziel"
+    }    
 }

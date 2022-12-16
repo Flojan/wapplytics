@@ -1,6 +1,4 @@
 const CustomIcon = (props) => {
-  console.log("Hier: ", props.name);
-
   const icon = {
     stapel: (
       <path

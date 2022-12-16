@@ -10,10 +10,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model user {
+model User {
   id           Int      @id @default(autoincrement())
   created      DateTime @default(now())
-  updated      DateTime @default(now())
+  updated      DateTime @updatedAt
   username     String   @unique
   password     String
   admin        Boolean  @default(false)
@@ -21,30 +21,35 @@ model user {
   active_tiles String   @default("{'livedata':'true','multidata':'true','bigchart':'true','goal':'true','smalltext':'true','smallchart':'true'}")
 }
 
-model website {
-  website_id     Int      @id @default(autoincrement())
-  website_nanoid String   @unique
-  created        DateTime @default(now())
+model Website {
+  id             Int       @id @default(autoincrement())
+  website_nanoid String    @unique
+  created        DateTime  @default(now())
   website_url    String
   website_name   String
+  sessions       Session[]
+  goals          Goal[]
 }
 
-model goal {
-  goal_id    Int      @id @default(autoincrement())
+model Goal {
+  id         Int      @id @default(autoincrement())
   start      DateTime
   end        DateTime
   website_id Int
+  website    Website  @relation(fields: [website_id], references: [id])
   goal_name  String
   indicators String
   url        String
   target     Int
 }
 
-model session {
-  session_id   Int      @id @default(autoincrement())
+model Session {
+  id           Int      @id @default(autoincrement())
   session_uuid String   @unique
   created      DateTime @default(now())
+  updated      DateTime @updatedAt
   website_id   Int
+  website      Website  @relation(fields: [website_id], references: [id])
   website_url  String
   language     String
   country      String
@@ -52,15 +57,17 @@ model session {
   os           String
   device       String
   screen       String
+  referrer     String
+  views        View[]
 }
 
-model view {
-  view_id    Int      @id @default(autoincrement())
+model View {
+  id         Int      @id @default(autoincrement())
   created    DateTime @default(now())
   session_id Int
+  session    Session  @relation(fields: [session_id], references: [id])
   website_id Int
   path       String
-  referrer   String
 }
 
 // sobald hier Änderungen vorgenommen werden, muss folgendes ausgeführt werden:

@@ -16,17 +16,33 @@
 .tr-rounded-full {
     @apply dark:bg-white bg-black !important;
 }
+g.recharts-layer.recharts-bar path {
+    @apply dark:fill-white fill-black !important;
+}
+/* .rsm-geographies path {
+    @apply fill-yellow-500;
+} */
+
 
 @layer base {
     text {
         @apply dark:fill-white fill-black;
     }
-    g path {
+    /* g path {
         @apply dark:fill-white fill-black;
-    }
+    } */
     circle {
         @apply dark:fill-white fill-black;   
     }
+    /* rect {
+        @apply dark:fill-black fill-white;
+    }
+    polygon {
+        @apply hidden
+    }
+    svg g path {
+        @apply dark:fill-white fill-black;
+    } */
 }
 
 @font-face {

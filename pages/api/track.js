@@ -3,6 +3,7 @@ import {
   anonymizeIP,
   createSession,
   createView,
+  filterReferrer,
   generateUUID,
   getRequestIP,
   getWebsiteByNanoID,
@@ -21,6 +22,7 @@ export default async function handler(req, res) {
     return;
   }
   const data = req.body;
+  // data.referrer = "https://www.google.com/";
   data.dbwebsite = await getWebsiteByNanoID(data.identifier);
   const validWebsite = await websiteValidationCheck(data.dbwebsite, data.website);
   if (!validWebsite) {
@@ -38,7 +40,8 @@ export default async function handler(req, res) {
   const clientIPv6 = "2a03:1b20:6:f011::a02e";
 
   data.anonymizedIP = anonymizeIP(clientIPv4);
-  data.sessionUUID = generateUUID(data.dbwebsite.website_id + data.anonymizedIP + data.referrer + data.userAgent);
+  data.referrer = filterReferrer(data.referrer, data.website);
+  data.sessionUUID = generateUUID(data.dbwebsite.id + data.anonymizedIP + data.referrer + data.userAgent);
   data.session = await sessionExists(data.sessionUUID);
   data.session ? await createView(data) : await createSession(data);
 }

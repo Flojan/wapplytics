@@ -2,19 +2,20 @@ import { Fragment, useContext } from "react";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import { Menu, Transition, Disclosure } from "@headlessui/react";
-import ThemeContext from "../../utils/context";
+import ThemeContext from "../../contexts/ThemeContext";
 import { useRouter } from "next/router";
 import Icon from "../atoms/CustomIcon";
 import { useTranslation } from "react-i18next";
 import MenuItem from "../molecule/MenuItem";
 import TitleH2 from "../atoms/TitleH2";
+import DataContext from "../../contexts/DataContext";
 
 const Navigation = () => {
-  const ctx = useContext(ThemeContext);
+  const themeCtx = useContext(ThemeContext);
+  const dataCtx = useContext(DataContext);
   const { data } = useSession();
   const router = useRouter();
   const { t } = useTranslation("common");
-  console.log(t("navigation.overview"));
 
   return (
     <div
@@ -67,13 +68,13 @@ const Navigation = () => {
                 >
                   <Disclosure.Panel as="ul">
                     <li className="">
-                      <MenuItem href="#website" value={t("navigation.websites")} />
+                      <MenuItem href="/settings/websites" value={t("navigation.websites")} />
                     </li>
                     <li className="">
                       <MenuItem href="/settings/users" value={t("navigation.user_manage")} />
                     </li>
                     <li className="">
-                      <MenuItem href="#profile" value={t("navigation.profile")} />
+                      <MenuItem href="/settings/profile" value={t("navigation.profile")} />
                     </li>
                   </Disclosure.Panel>
                 </Transition>
@@ -84,7 +85,7 @@ const Navigation = () => {
       </div>
       <div className="flex-row w-full">
         <div className="flex pl-4 pb-4 space-x-4 border-b-2">
-          <button onClick={ctx.toggleTheme} className="">
+          <button onClick={themeCtx.toggleTheme} className="">
             <Icon name="bulb" />
           </button>
           <Menu as="div" className="relative inline-block text-left">
@@ -106,7 +107,7 @@ const Navigation = () => {
                 <div className="py-1 ">
                   <Menu.Item>
                     {({ active }) => (
-                      <Link legacyBehavior={false} href="/" locale={(router.locale = "de")}>
+                      <Link legacyBehavior={false} href="" locale={(router.locale = "de")}>
                         <button className={(active ? "bg-gray-100 text-gray-900" : "text-gray-700", "block px-4 py-2 text-sm")}>
                           {t("languages.de")}
                         </button>
@@ -117,7 +118,7 @@ const Navigation = () => {
                 <div className="py-1">
                   <Menu.Item>
                     {({ active }) => (
-                      <Link legacyBehavior={false} href="/" locale={(router.locale = "en")}>
+                      <Link legacyBehavior={false} href="" locale={(router.locale = "en")}>
                         <button className={(active ? "bg-gray-100 text-gray-900" : "text-gray-700", "block px-4 py-2 text-sm")}>
                           {t("languages.en")}
                         </button>
