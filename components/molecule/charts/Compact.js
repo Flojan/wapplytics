@@ -16,7 +16,7 @@ const Compact = (props) => {
       setData(await getData(props));
       setLoading(false);
     })();
-  }, []); // triggert einen reload wenn props sich ändern, noch einmal Hinweis lesen!
+  }, [props]); // triggert einen reload wenn props sich ändern, noch einmal Hinweis lesen!
 
   if (isLoading) return <Loading />;
   return (

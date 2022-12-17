@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import Bar from "../molecule/charts/Bar";
 import Compact from "../molecule/charts/Compact";
 import List from "../molecule/charts/List";
@@ -10,7 +11,7 @@ const Tile = (props) => {
   const smalltext = ["path", "language", "country", "browser", "os", "device", "screen", "referrer"];
   const smallchart = ["browser", "os", "device"];
 
-  console.log(props.tile);
+  console.log(props.website_id);
   if (props.tile === "multidata" && multidata.includes(props.indicator)) {
     return <Bar {...props} />;
   } else if (props.tile === "compact" && compact.includes(props.indicator)) {

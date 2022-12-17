@@ -1,10 +1,20 @@
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { useEffect, useState } from "react";
-import { getWebsites } from "../../utils/requests";
+import { useContext, useEffect, useState } from "react";
+import Loading from "../../components/molecule/Loading";
+import DataContext from "../../contexts/DataContext";
 
 /** @param {import('next').InferGetStaticPropsType<typeof getStaticProps> } props */
 export function Websites(props) {
-  const [data, setData] = useState([]);
+  const { dataCtx, isLoading } = useContext(DataContext);
+  const [websites, setWebsites] = useState([]);
+
+  // console.log(data.user.username);
+  useEffect(() => {
+    if (!isLoading) setWebsites(dataCtx.websites.data);
+  }, [isLoading, dataCtx.websites.data]);
+
+  console.log("DATA", websites);
+  if (isLoading) return <Loading />;
 
   return (
     <>

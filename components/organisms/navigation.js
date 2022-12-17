@@ -9,14 +9,21 @@ import { useTranslation } from "react-i18next";
 import MenuItem from "../molecule/MenuItem";
 import TitleH2 from "../atoms/TitleH2";
 import DataContext from "../../contexts/DataContext";
+import Loading from "../molecule/Loading";
 
 const Navigation = () => {
   const themeCtx = useContext(ThemeContext);
-  const dataCtx = useContext(DataContext);
+  const { dataCtx, isLoading } = useContext(DataContext);
   const { data } = useSession();
   const router = useRouter();
   const { t } = useTranslation("common");
 
+  const onToggleLngChange = (locale) => {
+    const { pathname, asPath, query } = router;
+    router.push({ pathname, query }, asPath, { locale });
+  };
+
+  if (isLoading) return <Loading />;
   return (
     <div
       className="bg-white dark:bg-black text-black dark:text-white w-60 border-r-2 h-screen fixed flex flex-col justify-between"
@@ -45,12 +52,11 @@ const Navigation = () => {
                   leaveTo="transform scale-95 opacity-0"
                 >
                   <Disclosure.Panel as="ul">
-                    <li className="">
-                      <MenuItem href="#website1" value="Website 1" />
-                    </li>
-                    <li className="">
-                      <MenuItem href="#website2" value="Website 2" />
-                    </li>
+                    {dataCtx.websites.data.map((website) => (
+                      <li key={website.id}>
+                        <MenuItem href={`/website/${website.id}`} value={website.website_name} />
+                      </li>
+                    ))}
                   </Disclosure.Panel>
                 </Transition>
               </Disclosure>
@@ -67,12 +73,16 @@ const Navigation = () => {
                   leaveTo="transform scale-95 opacity-0"
                 >
                   <Disclosure.Panel as="ul">
-                    <li className="">
-                      <MenuItem href="/settings/websites" value={t("navigation.websites")} />
-                    </li>
-                    <li className="">
-                      <MenuItem href="/settings/users" value={t("navigation.user_manage")} />
-                    </li>
+                    {data.user.admin && (
+                      <>
+                        <li className="">
+                          <MenuItem href="/settings/websites" value={t("navigation.websites")} />
+                        </li>
+                        <li className="">
+                          <MenuItem href="/settings/users" value={t("navigation.user_manage")} />
+                        </li>
+                      </>
+                    )}
                     <li className="">
                       <MenuItem href="/settings/profile" value={t("navigation.profile")} />
                     </li>
@@ -107,22 +117,28 @@ const Navigation = () => {
                 <div className="py-1 ">
                   <Menu.Item>
                     {({ active }) => (
-                      <Link legacyBehavior={false} href="" locale={(router.locale = "de")}>
-                        <button className={(active ? "bg-gray-100 text-gray-900" : "text-gray-700", "block px-4 py-2 text-sm")}>
-                          {t("languages.de")}
-                        </button>
-                      </Link>
+                      // <Link legacyBehavior={false} href="/" locale={(router.locale = "de")}>
+                      <button
+                        onClick={() => onToggleLngChange("de")}
+                        className={(active ? "bg-gray-100 text-gray-900" : "text-gray-700", "block px-4 py-2 text-sm")}
+                      >
+                        {t("languages.de")}
+                      </button>
+                      // </Link>
                     )}
                   </Menu.Item>
                 </div>
                 <div className="py-1">
                   <Menu.Item>
                     {({ active }) => (
-                      <Link legacyBehavior={false} href="" locale={(router.locale = "en")}>
-                        <button className={(active ? "bg-gray-100 text-gray-900" : "text-gray-700", "block px-4 py-2 text-sm")}>
-                          {t("languages.en")}
-                        </button>
-                      </Link>
+                      // <Link legacyBehavior={false} href="/" locale={(router.locale = "en")}>
+                      <button
+                        onClick={() => onToggleLngChange("en")}
+                        className={(active ? "bg-gray-100 text-gray-900" : "text-gray-700", "block px-4 py-2 text-sm")}
+                      >
+                        {t("languages.en")}
+                      </button>
+                      // </Link>
                     )}
                   </Menu.Item>
                 </div>

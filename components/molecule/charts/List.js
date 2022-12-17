@@ -16,7 +16,7 @@ const List = (props) => {
       setData(await getData(props));
       setLoading(false);
     })();
-  }, []); // triggert einen reload wenn props sich ändern
+  }, [props]); // triggert einen reload wenn props sich ändern
 
   if (isLoading) return <Loading />;
 

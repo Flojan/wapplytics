@@ -27,19 +27,10 @@ export default function Home(props) {
         <main className="p-10">
           <h1 className="text-7xl font-bold underline">{t("navigation.overview")}</h1>
           <Tile website_id={website_id} tile="multidata" indicator="view" i18n="true" />
-          <Tile website_id={website_id} tile="smalltext" indicator="path" />
-          <Tile website_id={website_id} tile="smalltext" indicator="language" />
-          <Tile website_id={website_id} tile="smalltext" indicator="country" />
-          <Tile website_id={website_id} tile="smalltext" indicator="browser" />
-          <Tile website_id={website_id} tile="smalltext" indicator="os" />
-          <Tile website_id={website_id} tile="smalltext" indicator="device" />
-          <Tile website_id={website_id} tile="smalltext" indicator="screen" />
-          <Tile website_id={website_id} tile="smalltext" indicator="referrer" />
           <Tile website_id={website_id} tile="compact" indicator="view" />
           <Tile website_id={website_id} tile="compact" indicator="unique-user" />
           <Tile website_id={website_id} tile="compact" indicator="bounce-rate" />
           <Tile website_id={website_id} tile="compact" indicator="avg-visit-time" />
-          <Tile website_id={website_id} tile="bigchart" indicator="country" />
         </main>
       </div>
     );

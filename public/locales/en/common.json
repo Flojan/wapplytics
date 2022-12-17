@@ -3,7 +3,8 @@
     "loading": "Loading ...",
     "navigation": {
         "overview": "Overview",
-        "websites": "Websites",
+        "websites": "Websites",        
+        "detailview": "Detail View",
         "settings": "Settings",
         "user_manage": "User Management",
         "profile": "Profile"

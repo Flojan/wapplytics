@@ -17,7 +17,7 @@ const Bar = (props) => {
       setData(await getData(props));
       setLoading(false);
     })();
-  }, []);
+  }, [props]);
 
   const chartdatai18n = (data) => {
     let chartdata = [];

@@ -4,6 +4,7 @@
     "navigation": {
         "overview": "Übersicht",
         "websites": "Websites",
+        "detailview": "Detailansicht",
         "settings": "Einstellungen",
         "user_manage": "Nutzerverwaltung",
         "profile": "Profil"
