@@ -49,7 +49,7 @@ export const anonymizeIP = (ip) => {
 };
 
 export const filterReferrer = (referrer, website) => {
-  if (referrer.includes(website)) return "";
+  if (referrer.includes(website) || referrer === "") return website;
   return referrer;
 };
 

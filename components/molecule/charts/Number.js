@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { getData } from "../../../utils/requests";
 import Loading from "../Loading";
 
-const Compact = (props) => {
+const Number = (props) => {
   const [data, setData] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const { t } = useTranslation("common");
@@ -16,7 +16,7 @@ const Compact = (props) => {
       setData(await getData(props));
       setLoading(false);
     })();
-  }, [props]); // triggert einen reload wenn props sich ändern, noch einmal Hinweis lesen!
+  }, [props]);
 
   if (isLoading) return <Loading />;
   return (
@@ -27,4 +27,4 @@ const Compact = (props) => {
   );
 };
 
-export default Compact;
+export default Number;

@@ -14,6 +14,7 @@ import {
 export default async function handler(req, res) {
   // CORS aktivieren
   await NextCors(req, res, {
+    methods: ["POST"],
     origin: true,
   });
   if (req.method !== "POST") {
@@ -43,5 +44,6 @@ export default async function handler(req, res) {
   data.referrer = filterReferrer(data.referrer, data.website);
   data.sessionUUID = generateUUID(data.dbwebsite.id + data.anonymizedIP + data.referrer + data.userAgent);
   data.session = await sessionExists(data.sessionUUID);
+  console.log("session", data.session);
   data.session ? await createView(data) : await createSession(data);
 }
