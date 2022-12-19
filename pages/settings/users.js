@@ -13,7 +13,6 @@ export function Users(props) {
 
   // const { dataCtx, isLoading } = useContext(DataContext);
   const { dataCtx, isLoading } = useContext(DataContext);
-  console.log(dataCtx);
 
   const addUser = async (props) => {
     console.log("ADD USER", await createUser(props));
@@ -27,7 +26,7 @@ export function Users(props) {
   if (status === "authenticated" && data.user.admin && !isLoading) {
     return (
       <div className="flex">
-        <button onClick={() => addUser({ username: "abc", password: "test", admin: true })}>Create User</button>
+        <button onClick={() => addUser({ username: "florian", password: "test", admin: true })}>Create User</button>
         <div className="w-full h-screen max-w-md space-y-8">
           <ul>
             {dataCtx.users.data.map((user) => (

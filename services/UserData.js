@@ -9,7 +9,8 @@ export const getAllUserData = async () => {
         username: true,
         password: true,
         admin: true,
-        settings: true,
+        timerange: true,
+        timezone: true,
         active_tiles: true,
       },
     })

@@ -5,24 +5,24 @@ import { getData } from "../../../utils/requests";
 import Loading from "../Loading";
 
 const Number = (props) => {
-  const [data, setData] = useState(false);
-  const [isLoading, setLoading] = useState(false);
+  // const [data, setData] = useState(false);
+  // const [isLoading, setLoading] = useState(false);
   const { t } = useTranslation("common");
 
-  useEffect(() => {
-    setLoading(true);
+  // useEffect(() => {
+  //   setLoading(true);
 
-    (async () => {
-      setData(await getData(props));
-      setLoading(false);
-    })();
-  }, [props]);
+  //   (async () => {
+  //     setData(await getData(props));
+  //     setLoading(false);
+  //   })();
+  // }, [props]);
 
-  if (isLoading) return <Loading />;
+  // if (isLoading) return <Loading />;
   return (
     <Card key={""} marginTop="mt-6">
       <Text>{t("charts." + props.indicator)}</Text>
-      <Metric>{data.data}</Metric>
+      <Metric>{props.data}</Metric>
     </Card>
   );
 };

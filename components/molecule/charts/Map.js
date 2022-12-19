@@ -6,8 +6,8 @@ import { getData } from "../../../utils/requests";
 import Loading from "../Loading";
 
 const Map = (props) => {
-  const [data, setData] = useState([]);
-  const [isLoading, setLoading] = useState(false);
+  // const [data, setData] = useState([]);
+  // const [isLoading, setLoading] = useState(false);
   const { t } = useTranslation("common");
 
   const geoUrl = "/world-map.json";
@@ -20,17 +20,6 @@ const Map = (props) => {
       : "#ddd";
   }
 
-  useEffect(() => {
-    setLoading(true);
-
-    (async () => {
-      const data = await getData(props);
-      setData(data.data);
-      setLoading(false);
-    })();
-  }, [props]);
-
-  if (isLoading) return <Loading />;
   return (
     <Card key={""} marginTop="mt-6">
       <Text>{t("charts." + props.indicator)}</Text>
@@ -38,7 +27,6 @@ const Map = (props) => {
         width={900}
         height={500}
         projectionConfig={{
-          //   rotate: [-10, -10, -10],
           center: [0, 45],
           scale: 110,
         }}
@@ -47,7 +35,7 @@ const Map = (props) => {
         <Geographies geography={geoUrl}>
           {({ geographies }) => {
             return geographies.map((geo) => {
-              return <Geography key={geo.rsmKey} geography={geo} fill={getCountryViews(geo.properties, data)} stroke="#fff" />;
+              return <Geography key={geo.rsmKey} geography={geo} fill={getCountryViews(geo.properties, props.data)} stroke="#fff" />;
             });
           }}
         </Geographies>

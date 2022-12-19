@@ -8,12 +8,10 @@ export function Websites(props) {
   const { dataCtx, isLoading } = useContext(DataContext);
   const [websites, setWebsites] = useState([]);
 
-  // console.log(data.user.username);
   useEffect(() => {
     if (!isLoading) setWebsites(dataCtx.websites.data);
   }, [isLoading, dataCtx.websites.data]);
 
-  console.log("DATA", websites);
   if (isLoading) return <Loading />;
 
   return (

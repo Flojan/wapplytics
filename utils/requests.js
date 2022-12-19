@@ -1,5 +1,5 @@
 export const getData = async (props) => {
-  const res = await fetch(`/api/data/${props.website_id}/${props.tile}/${props.indicator}/calculate`, {
+  const res = await fetch(`/api/data/${props.website_id}/${props.user_id}/${props.tile}/${props.indicator}/calculate`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -29,7 +29,6 @@ export const getUsers = async (props) => {
 };
 
 export const createUser = async (props) => {
-  console.log(props);
   const res = await fetch("/api/user/create", {
     method: "POST",
     headers: {

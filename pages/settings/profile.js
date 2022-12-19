@@ -9,12 +9,10 @@ const Profile = () => {
   const { status, data } = useSession();
   const [user, setUser] = useState([]);
 
-  // console.log(data.user.username);
   useEffect(() => {
     if (!isLoading) setUser(dataCtx.users.data.find((user) => user.username === data.user.username));
   }, [isLoading, dataCtx.users.data, data]);
 
-  console.log("DATA", user);
   if (isLoading) return <Loading />;
   return (
     <>

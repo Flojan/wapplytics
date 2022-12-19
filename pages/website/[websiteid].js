@@ -10,18 +10,22 @@ import DataContext from "../../contexts/DataContext";
 import nextI18nextConfig from "../../next-i18next.config";
 
 const Website = (props) => {
-  console.log("🚀 ~ file: [websiteid].js:28 ~ Website ~ props", props);
   const router = useRouter();
-  const { status } = useSession();
+  const { status, data } = useSession();
   const { t } = useTranslation("common");
   const { dataCtx, isLoading } = useContext(DataContext);
   const [website, setWebsite] = useState();
+  const [timerange, setTimerange] = useState();
+  const [activeTiles, setActiveTiles] = useState();
   const [routerQuery, setRouterQuery] = useState(router.query.websiteid);
   useEffect(() => {
-    console.log("🚀 ~ file: [websiteid].js:22 ~ Website ~ routerQuery", routerQuery);
     setRouterQuery(router.query.websiteid);
-    if (!isLoading) setWebsite(dataCtx.websites.data.find((website) => website.id === parseInt(routerQuery)));
-  }, [dataCtx.websites.data, isLoading, routerQuery, router.query.websiteid]);
+    if (!isLoading && status === "authenticated") {
+      setWebsite(dataCtx.websites.data.find((website) => website.id === parseInt(routerQuery)));
+      setTimerange(dataCtx.users.data.find((user) => user.username === data.user.username).timerange);
+      setActiveTiles(JSON.parse(dataCtx.users.data.find((user) => user.username === data.user.username).active_tiles));
+    }
+  }, [dataCtx, isLoading, routerQuery, router.query.websiteid, data, status]);
 
   if (isLoading) return <Loading />;
   if (status === "authenticated" && website !== undefined) {
@@ -31,20 +35,20 @@ const Website = (props) => {
         <main className="p-10">
           <h1 className="text-7xl font-bold">{t("navigation.detailview")}</h1>
           <h2 className="text-4xl font-normal">{website.website_name}</h2>
-          <Tile website_id={routerQuery} tile="multidata" indicator="view" i18n="true" />
-          <Tile website_id={routerQuery} tile="smalltext" indicator="path" />
-          <Tile website_id={routerQuery} tile="smalltext" indicator="language" />
-          <Tile website_id={routerQuery} tile="smalltext" indicator="country" />
-          <Tile website_id={routerQuery} tile="smalltext" indicator="browser" />
-          <Tile website_id={routerQuery} tile="smalltext" indicator="os" />
-          <Tile website_id={routerQuery} tile="smalltext" indicator="device" />
-          <Tile website_id={routerQuery} tile="smalltext" indicator="screen" />
-          <Tile website_id={routerQuery} tile="smalltext" indicator="referrer" />
-          <Tile website_id={routerQuery} tile="compact" indicator="view" />
-          <Tile website_id={routerQuery} tile="compact" indicator="unique-user" />
-          <Tile website_id={routerQuery} tile="compact" indicator="bounce-rate" />
-          <Tile website_id={routerQuery} tile="compact" indicator="avg-visit-time" />
-          <Tile website_id={routerQuery} tile="bigchart" indicator="country" />
+          <Tile website_id={routerQuery} user_id={data.user.id} tile="multidata" indicator="view" i18n="true" />
+          <Tile website_id={routerQuery} user_id={data.user.id} tile="smalltext" indicator="path" />
+          <Tile website_id={routerQuery} user_id={data.user.id} tile="smalltext" indicator="language" />
+          <Tile website_id={routerQuery} user_id={data.user.id} tile="smalltext" indicator="country" i18n="true" />
+          <Tile website_id={routerQuery} user_id={data.user.id} tile="smalltext" indicator="browser" />
+          <Tile website_id={routerQuery} user_id={data.user.id} tile="smalltext" indicator="os" />
+          <Tile website_id={routerQuery} user_id={data.user.id} tile="smalltext" indicator="device" />
+          <Tile website_id={routerQuery} user_id={data.user.id} tile="smalltext" indicator="screen" />
+          <Tile website_id={routerQuery} user_id={data.user.id} tile="smalltext" indicator="referrer" />
+          <Tile website_id={routerQuery} user_id={data.user.id} tile="compact" indicator="view" />
+          <Tile website_id={routerQuery} user_id={data.user.id} tile="compact" indicator="unique-user" />
+          <Tile website_id={routerQuery} user_id={data.user.id} tile="compact" indicator="bounce-rate" />
+          <Tile website_id={routerQuery} user_id={data.user.id} tile="compact" indicator="avg-visit-time" />
+          <Tile website_id={routerQuery} user_id={data.user.id} tile="bigchart" indicator="country" i18n="true" />
         </main>
       </div>
     );

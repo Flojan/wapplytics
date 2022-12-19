@@ -40,27 +40,29 @@ const Navigation = () => {
             <li className="">
               <MenuItem href="/" icon="stapel" value={t("navigation.overview")} />
             </li>
-            <li className="">
-              <Disclosure>
-                <MenuItem icon="display" value={t("navigation.websites")} />
-                <Transition
-                  enter="transition duration-100 ease-out"
-                  enterFrom="transform scale-95 opacity-0"
-                  enterTo="transform scale-100 opacity-100"
-                  leave="transition duration-75 ease-out"
-                  leaveFrom="transform scale-100 opacity-100"
-                  leaveTo="transform scale-95 opacity-0"
-                >
-                  <Disclosure.Panel as="ul">
-                    {dataCtx.websites.data.map((website) => (
-                      <li key={website.id}>
-                        <MenuItem href={`/website/${website.id}`} value={website.website_name} />
-                      </li>
-                    ))}
-                  </Disclosure.Panel>
-                </Transition>
-              </Disclosure>
-            </li>
+            {dataCtx.websites.data.length !== 0 && (
+              <li className="">
+                <Disclosure>
+                  <MenuItem icon="display" value={t("navigation.websites")} />
+                  <Transition
+                    enter="transition duration-100 ease-out"
+                    enterFrom="transform scale-95 opacity-0"
+                    enterTo="transform scale-100 opacity-100"
+                    leave="transition duration-75 ease-out"
+                    leaveFrom="transform scale-100 opacity-100"
+                    leaveTo="transform scale-95 opacity-0"
+                  >
+                    <Disclosure.Panel as="ul">
+                      {dataCtx.websites.data.map((website) => (
+                        <li key={website.id}>
+                          <MenuItem href={`/website/${website.id}`} value={website.website_name} />
+                        </li>
+                      ))}
+                    </Disclosure.Panel>
+                  </Transition>
+                </Disclosure>
+              </li>
+            )}
             <li className="">
               <Disclosure>
                 <MenuItem icon="settings" value={t("navigation.settings")} />

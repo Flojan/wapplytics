@@ -25,7 +25,7 @@ export const authOptions = {
         if (!isValid) {
           throw new Error("Invalid password");
         }
-        return { username: user.username, admin: user.admin };
+        return { id: user.id, username: user.username, admin: user.admin };
       },
     }),
   ],
@@ -38,12 +38,14 @@ export const authOptions = {
       if (user) {
         token.username = user.username;
         token.admin = user.admin;
+        token.id = user.id;
       }
       return token;
     },
     async session({ session, token }) {
       session.user.username = token.username;
       session.user.admin = token.admin;
+      session.user.id = token.id;
       return session;
     },
   },

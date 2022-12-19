@@ -5,25 +5,37 @@ import { getData } from "../../../utils/requests";
 import Loading from "../Loading";
 
 const List = (props) => {
-  const [data, setData] = useState(false);
-  const [isLoading, setLoading] = useState(false);
+  // const [data, setData] = useState(false);
+  // const [isLoading, setLoading] = useState(false);
   const { t } = useTranslation("common");
 
-  useEffect(() => {
-    setLoading(true);
+  // useEffect(() => {
+  //   setLoading(true);
+  //   (async () => {
+  //     setData(await getData(props));
+  //     setLoading(false);
+  //   })();
+  // }, [props]);
 
-    (async () => {
-      setData(await getData(props));
-      setLoading(false);
-    })();
-  }, [props]);
+  // if (isLoading) return <Loading />;
 
-  if (isLoading) return <Loading />;
+  const chartdatai18n = (data) => {
+    let chartdata = [];
+    if (data) {
+      data.forEach((item) => {
+        chartdata.push({
+          name: t("countries." + item.name),
+          value: item.value,
+        });
+      });
+    }
+    return chartdata;
+  };
 
   return (
-    <Card key={""} marginTop="mt-6">
+    <Card marginTop="mt-6">
       <Text>{t("charts." + props.indicator)}</Text>
-      <BarList data={data.data} color="slate" showAnimation={true} marginTop="mt-6" />
+      <BarList data={props.i18n ? chartdatai18n(props.data) : props.data} color="slate" showAnimation={true} marginTop="mt-6" />
     </Card>
   );
 };

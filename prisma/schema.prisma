@@ -17,8 +17,9 @@ model User {
   username     String   @unique
   password     String
   admin        Boolean  @default(false)
-  settings     String   @default("{'timezone':'berlin','language':'en','theme':'dark','timerange':'week'}")
-  active_tiles String   @default("{'livedata':'true','multidata':'true','bigchart':'true','goal':'true','smalltext':'true','smallchart':'true'}")
+  timezone     String   @default("Europe/Berlin")
+  timerange    String   @default("week")
+  active_tiles String   @default("{\"view\":true,\"unique-user\":true,\"avg-visit-time\":true,\"bounce-rate\":true,\"country\":true,\"path\":true,\"language\":true,\"browser\":true,\"os\":true,\"device\":true,\"screen\":true,\"referrer\":true}")
 }
 
 model Website {

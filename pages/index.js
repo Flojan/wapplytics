@@ -10,7 +10,7 @@ import DataContext from "../contexts/DataContext";
 /** @param {import('next').InferGetStaticPropsType<typeof getStaticProps> } props */
 export default function Home(props) {
   const { t } = useTranslation("common");
-  const { status } = useSession();
+  const { status, data } = useSession();
   const [websites, setWebsites] = useState([]);
   const { dataCtx, isLoading } = useContext(DataContext);
 
@@ -18,9 +18,6 @@ export default function Home(props) {
     if (!isLoading) setWebsites(dataCtx.websites.data.map((website) => website));
   }, [isLoading, dataCtx.websites.data]);
 
-  const website_id = "2";
-
-  // console.log("🚀 ~ file: index.js:15 ~ Home ~ ids", ids);
   if (isLoading) return <Loading />;
   if (status === "authenticated") {
     return (
@@ -31,14 +28,7 @@ export default function Home(props) {
           {websites.map((website) => (
             <Fragment key={website.id}>
               <h2 className="text-4xl font-normal mt-8">{website.website_name}</h2>
-
-              <div className="grid grid-cols-4 gap-2">
-                <Tile website_id={website.id} tile="compact" indicator="view" />
-                <Tile website_id={website.id} tile="compact" indicator="unique-user" />
-                <Tile website_id={website.id} tile="compact" indicator="bounce-rate" />
-                <Tile website_id={website.id} tile="compact" indicator="avg-visit-time" />
-              </div>
-              <Tile website_id={website.id} tile="multidata" indicator="view" i18n="true" />
+              <Tile website_id={website.id} user_id={data.user.id} tile="multidata" indicator="view" i18n="true" />
             </Fragment>
           ))}
         </main>
