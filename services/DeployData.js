@@ -242,7 +242,7 @@ export const getCompactData = async (website_id, user_id, indicator) => {
       .catch((e) => {
         console.log("ERROR", e);
       });
-    const bouncers = sessions.filter((session) => session._count.view === 1).length;
+    const bouncers = sessions.filter((session) => session._count.views === 1).length;
 
     return Math.floor((bouncers / sessions.length) * 100) + "%";
   }
@@ -345,6 +345,21 @@ export const getSmallTextData = async (website_id, user_id, indicator) => {
     });
   });
   return chartdata;
+};
+
+export const getLiveData = async (website_id) => {
+  return await client.session
+    .count({
+      where: {
+        website_id: parseInt(website_id),
+        updated: {
+          gte: DateTime.now().minus({ minutes: 5 }).toISO(),
+        },
+      },
+    })
+    .catch((e) => {
+      console.log("ERROR", e);
+    });
 };
 
 const getUserTimerange = async (user_id) => {

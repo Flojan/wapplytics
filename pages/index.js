@@ -23,7 +23,7 @@ export default function Home(props) {
     return (
       <div className="min-h-screen">
         <Head></Head>
-        <main className="p-10">
+        <main className="p-10 xl:p-20">
           <h1 className="text-7xl font-bold">{t("navigation.overview")}</h1>
           {websites.map((website) => (
             <Fragment key={website.id}>

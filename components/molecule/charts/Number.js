@@ -20,7 +20,7 @@ const Number = (props) => {
 
   // if (isLoading) return <Loading />;
   return (
-    <Card key={""} marginTop="mt-6">
+    <Card key={""} marginTop="">
       <Text>{t("charts." + props.indicator)}</Text>
       <Metric>{props.data}</Metric>
     </Card>

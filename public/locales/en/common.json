@@ -62,6 +62,7 @@
         "fri": "Fri ",
         "sat": "Sat ",
         "sun": "Sun ",
+        "live-user": "Live User",
         "view": "Views",
         "unique-user": "Users",
         "bounce-rate": "Bounce Rate",
@@ -74,7 +75,17 @@
         "os": "Operating Systems",
         "screen": "Resolutions",
         "referrer": "Referrer",
-        "goal": "Goal"
+        "goal": "Goal",
+        "last24": "Last 24 Hours",
+        "today": "Today",   
+        "lastweek": "Last Week",
+        "week": "This Week",
+        "last30": "Last 30 Days",
+        "month": "This Month",
+        "last90": "Last 90 Days",
+        "last180": "Last 180 Days",
+        "year": "This Year",
+        "all": "All Time"
     },
     "countries": {
         "af": "Afghanistan",

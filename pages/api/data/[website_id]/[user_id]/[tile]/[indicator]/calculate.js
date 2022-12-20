@@ -1,4 +1,4 @@
-import { getBigChartData, getCompactData, getMultiData, getSmallTextData } from "../../../../../../../services/DeployData";
+import { getBigChartData, getCompactData, getLiveData, getMultiData, getSmallTextData } from "../../../../../../../services/DeployData";
 
 export default async function handler(req, res) {
   const { website_id, user_id, tile, indicator } = req.query;
@@ -15,6 +15,9 @@ export default async function handler(req, res) {
   } else if (tile === "smalltext") {
     const data = await getSmallTextData(website_id, user_id, indicator);
     res.status(200).json({ data: data });
+  } else if (tile === "livedata") {
+    const data = await getLiveData(website_id, user_id, indicator);
+    res.status(200).json({ data: data });
   } else if (tile === "smallchart") {
     // const data = await getCompactData(website_id, user_id, indicator);
     // res.status(200).json({ data: data });
@@ -22,6 +25,6 @@ export default async function handler(req, res) {
     // const data = await getCompactData(website_id, user_id, indicator);
     // res.status(200).json({ data: data });
   } else {
-    res.status(200).json({ data: "no valid tile" });
+    res.status(200).json({ data: "invalid response" });
   }
 }

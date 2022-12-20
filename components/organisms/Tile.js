@@ -5,8 +5,10 @@ import Map from "../molecule/charts/Map";
 import { useEffect, useState } from "react";
 import Loading from "../molecule/Loading";
 import { getData } from "../../utils/requests";
+import LiveNumber from "../molecule/charts/LiveNumber";
 
 const Tile = (props) => {
+  const livedata = ["live-user"];
   const multidata = ["view"];
   const compact = ["view", "unique-user", "avg-visit-time", "bounce-rate"];
   const bigchart = ["country"];
@@ -34,6 +36,8 @@ const Tile = (props) => {
     return <List {...data} {...props} />;
   } else if (props.tile === "bigchart" && bigchart.includes(props.indicator)) {
     return <Map {...data} {...props} />;
+  } else if (props.tile === "livedata" && livedata.includes(props.indicator)) {
+    return <LiveNumber {...data} {...props} />;
   }
   return (
     <>

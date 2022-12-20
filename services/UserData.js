@@ -47,3 +47,15 @@ const getUserByUsername = async (username) => {
       console.log("ERROR", e);
     });
 };
+
+export const updateUser = async (props) => {
+  console.log("UPDATE USER", props);
+  return await client.user
+    .update({
+      where: {
+        username: props.data.username,
+      },
+      data: { timerange: props.data.timerange },
+    })
+    .catch((e) => {});
+};

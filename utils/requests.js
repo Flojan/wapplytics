@@ -38,3 +38,14 @@ export const createUser = async (props) => {
   });
   return await res.json();
 };
+
+export const updateUser = async (props) => {
+  const res = await fetch("/api/user/edit", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ data: props }),
+  });
+  return await res.json();
+};

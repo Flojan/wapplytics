@@ -4,6 +4,8 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import LiveNumber from "../../components/molecule/charts/LiveNumber";
+import DropdownList from "../../components/molecule/DropdownList";
 import Loading from "../../components/molecule/Loading";
 import Tile from "../../components/organisms/Tile";
 import DataContext from "../../contexts/DataContext";
@@ -22,8 +24,8 @@ const Website = (props) => {
     setRouterQuery(router.query.websiteid);
     if (!isLoading && status === "authenticated") {
       setWebsite(dataCtx.websites.data.find((website) => website.id === parseInt(routerQuery)));
-      setTimerange(dataCtx.users.data.find((user) => user.username === data.user.username).timerange);
-      setActiveTiles(JSON.parse(dataCtx.users.data.find((user) => user.username === data.user.username).active_tiles));
+      // setTimerange(dataCtx.users.data.find((user) => user.username === data.user.username).timerange);
+      // setActiveTiles(JSON.parse(dataCtx.users.data.find((user) => user.username === data.user.username).active_tiles));
     }
   }, [dataCtx, isLoading, routerQuery, router.query.websiteid, data, status]);
 
@@ -32,9 +34,14 @@ const Website = (props) => {
     return (
       <div className="min-h-screen">
         <Head></Head>
-        <main className="p-10">
+        <main className="p-10 xl:p-20">
           <h1 className="text-7xl font-bold">{t("navigation.detailview")}</h1>
           <h2 className="text-4xl font-normal">{website.website_name}</h2>
+          <div className="w-full flex justify-between items-center">
+            <Tile website_id={routerQuery} user_id={data.user.id} tile="livedata" indicator="live-user" />
+            <DropdownList />
+          </div>
+
           <Tile website_id={routerQuery} user_id={data.user.id} tile="multidata" indicator="view" i18n="true" />
           <Tile website_id={routerQuery} user_id={data.user.id} tile="smalltext" indicator="path" />
           <Tile website_id={routerQuery} user_id={data.user.id} tile="smalltext" indicator="language" />
@@ -44,10 +51,6 @@ const Website = (props) => {
           <Tile website_id={routerQuery} user_id={data.user.id} tile="smalltext" indicator="device" />
           <Tile website_id={routerQuery} user_id={data.user.id} tile="smalltext" indicator="screen" />
           <Tile website_id={routerQuery} user_id={data.user.id} tile="smalltext" indicator="referrer" />
-          <Tile website_id={routerQuery} user_id={data.user.id} tile="compact" indicator="view" />
-          <Tile website_id={routerQuery} user_id={data.user.id} tile="compact" indicator="unique-user" />
-          <Tile website_id={routerQuery} user_id={data.user.id} tile="compact" indicator="bounce-rate" />
-          <Tile website_id={routerQuery} user_id={data.user.id} tile="compact" indicator="avg-visit-time" />
           <Tile website_id={routerQuery} user_id={data.user.id} tile="bigchart" indicator="country" i18n="true" />
         </main>
       </div>

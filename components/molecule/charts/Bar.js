@@ -39,7 +39,7 @@ const Bar = (props) => {
   // if (isLoading) return <Loading />;
   return (
     <Card marginTop="mt-6">
-      <div className="grid grid-cols-4 gap-2">
+      <div className="grid grid-cols-4 gap-4">
         <Tile website_id={props.website_id} user_id={props.user_id} tile="compact" indicator="view" />
         <Tile website_id={props.website_id} user_id={props.user_id} tile="compact" indicator="unique-user" />
         <Tile website_id={props.website_id} user_id={props.user_id} tile="compact" indicator="bounce-rate" />
