@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
-import Label from "../atoms/label";
-import Spinner from "../atoms/Spinner";
+import Label from "../basics/label";
+import Spinner from "../basics/Spinner";
 
 const Loading = () => {
   const { t } = useTranslation("common");

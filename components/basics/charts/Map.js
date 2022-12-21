@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ComposableMap, Geographies, Geography } from "react-simple-maps";
 import { getData } from "../../../utils/requests";
-import Tile from "../../organisms/Tile";
-import Loading from "../Loading";
+import Tile from "../../Tile";
+import Loading from "../../basics/Loading";
 
 const Map = (props) => {
   // const [data, setData] = useState([]);

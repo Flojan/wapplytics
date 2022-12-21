@@ -1,11 +1,12 @@
-import Bar from "../molecule/charts/Bar";
-import Number from "../molecule/charts/Number";
-import List from "../molecule/charts/List";
-import Map from "../molecule/charts/Map";
+import Bar from "./basics/charts/Bar";
+import Number from "./basics/charts/Number";
+import List from "./basics/charts/List";
+import Map from "./basics/charts/Map";
 import { useEffect, useState } from "react";
-import Loading from "../molecule/Loading";
-import { getData } from "../../utils/requests";
-import LiveNumber from "../molecule/charts/LiveNumber";
+import Loading from "./basics/Loading";
+import { getData } from "./../utils/requests";
+import LiveNumber from "./basics/charts/LiveNumber";
+import Pie from "./basics/charts/Pie";
 
 const Tile = (props) => {
   const livedata = ["live-user"];
@@ -13,7 +14,7 @@ const Tile = (props) => {
   const compact = ["view", "unique-user", "avg-visit-time", "bounce-rate"];
   const bigchart = ["country"];
   const smalltext = ["path", "language", "country", "browser", "os", "device", "screen", "referrer"];
-  const smallchart = ["browser", "os", "device"];
+  const smallchart = ["browser", "os", "device", "screen"];
   const [data, setData] = useState([]);
   const [isLoading, setLoading] = useState(false);
 
@@ -38,6 +39,8 @@ const Tile = (props) => {
     return <Map {...data} {...props} />;
   } else if (props.tile === "livedata" && livedata.includes(props.indicator)) {
     return <LiveNumber {...data} {...props} />;
+  } else if (props.tile === "smallchart" && smallchart.includes(props.indicator)) {
+    return <Pie {...data} {...props} />;
   }
   return (
     <>

@@ -1,7 +1,7 @@
 import { useSession } from "next-auth/react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useContext, useEffect, useState } from "react";
-import Loading from "../../components/molecule/Loading";
+import Loading from "../../components/basics/Loading";
 import DataContext from "../../contexts/DataContext";
 
 const Profile = () => {

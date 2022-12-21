@@ -17,7 +17,6 @@ const DropdownList = () => {
     { id: 7, name: t("charts.last90"), value: "90", unavailable: false },
     { id: 8, name: t("charts.last180"), value: "180", unavailable: false },
     { id: 9, name: t("charts.year"), value: "year", unavailable: false },
-    { id: 10, name: t("charts.all"), value: "all", unavailable: false },
   ];
   const { dataCtx, isLoading } = useContext(DataContext);
   const [timerange, setTimerange] = useState(timeranges[0]);

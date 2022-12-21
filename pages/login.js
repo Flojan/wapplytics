@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import CustomForm from "../components/molecule/CustomForm";
+import CustomForm from "../components/basics/CustomForm";
 
 /** @param {import('next').InferGetStaticPropsType<typeof getStaticProps> } props */
 export default function Login(props) {

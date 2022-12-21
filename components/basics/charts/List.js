@@ -2,22 +2,12 @@ import { BarList, Card, Text } from "@tremor/react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getData } from "../../../utils/requests";
-import Loading from "../Loading";
+import Loading from "../../basics/Loading";
 
 const List = (props) => {
   // const [data, setData] = useState(false);
   // const [isLoading, setLoading] = useState(false);
   const { t } = useTranslation("common");
-
-  // useEffect(() => {
-  //   setLoading(true);
-  //   (async () => {
-  //     setData(await getData(props));
-  //     setLoading(false);
-  //   })();
-  // }, [props]);
-
-  // if (isLoading) return <Loading />;
 
   const chartdatai18n = (data) => {
     let chartdata = [];

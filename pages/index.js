@@ -2,9 +2,9 @@ import Head from "next/head";
 import { useSession } from "next-auth/react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "react-i18next";
-import Loading from "../components/molecule/Loading";
+import Loading from "../components/basics/Loading";
 import { Fragment, useContext, useEffect, useState } from "react";
-import Tile from "../components/organisms/Tile";
+import Tile from "../components/Tile";
 import DataContext from "../contexts/DataContext";
 
 /** @param {import('next').InferGetStaticPropsType<typeof getStaticProps> } props */

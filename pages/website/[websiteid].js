@@ -4,10 +4,9 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import LiveNumber from "../../components/molecule/charts/LiveNumber";
-import DropdownList from "../../components/molecule/DropdownList";
-import Loading from "../../components/molecule/Loading";
-import Tile from "../../components/organisms/Tile";
+import DropdownList from "../../components/basics/DropdownList";
+import Loading from "../../components/basics/Loading";
+import Tile from "../../components/Tile";
 import DataContext from "../../contexts/DataContext";
 import nextI18nextConfig from "../../next-i18next.config";
 
@@ -47,6 +46,7 @@ const Website = (props) => {
           <Tile website_id={routerQuery} user_id={data.user.id} tile="smalltext" indicator="language" />
           <Tile website_id={routerQuery} user_id={data.user.id} tile="smalltext" indicator="country" i18n="true" />
           <Tile website_id={routerQuery} user_id={data.user.id} tile="smalltext" indicator="browser" />
+          <Tile website_id={routerQuery} user_id={data.user.id} tile="smallchart" indicator="browser" />
           <Tile website_id={routerQuery} user_id={data.user.id} tile="smalltext" indicator="os" />
           <Tile website_id={routerQuery} user_id={data.user.id} tile="smalltext" indicator="device" />
           <Tile website_id={routerQuery} user_id={data.user.id} tile="smalltext" indicator="screen" />

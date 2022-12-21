@@ -2,14 +2,14 @@ import { Fragment, useContext } from "react";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import { Menu, Transition, Disclosure } from "@headlessui/react";
-import ThemeContext from "../../contexts/ThemeContext";
+import ThemeContext from "./../contexts/ThemeContext";
 import { useRouter } from "next/router";
-import Icon from "../atoms/CustomIcon";
+import Icon from "./basics/CustomIcon";
 import { useTranslation } from "react-i18next";
-import MenuItem from "../molecule/MenuItem";
-import TitleH2 from "../atoms/TitleH2";
-import DataContext from "../../contexts/DataContext";
-import Loading from "../molecule/Loading";
+import MenuItem from "./basics/MenuItem";
+import TitleH2 from "./basics/TitleH2";
+import DataContext from "./../contexts/DataContext";
+import Loading from "./basics/Loading";
 
 const Navigation = () => {
   const themeCtx = useContext(ThemeContext);

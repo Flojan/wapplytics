@@ -2,8 +2,8 @@ import { BarChart, Card } from "@tremor/react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getData } from "../../../utils/requests";
-import Tile from "../../organisms/Tile";
-import Loading from "../Loading";
+import Tile from "../../Tile";
+import Loading from "../../basics/Loading";
 
 const Bar = (props) => {
   // const [data, setData] = useState([]);

@@ -1,9 +1,9 @@
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import FullWidthButton from "../atoms/FullWidthButton";
-import InputField from "../atoms/InputField";
-import TitleH2 from "../atoms/TitleH2";
+import FullWidthButton from "./FullWidthButton";
+import InputField from "./InputField";
+import TitleH2 from "./TitleH2";
 
 const CustomForm = (props) => {
   const [userInfo, setUserInfo] = useState({ username: "", password: "" });

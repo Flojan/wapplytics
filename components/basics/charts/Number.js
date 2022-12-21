@@ -2,7 +2,7 @@ import { Card, Metric, Text } from "@tremor/react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getData } from "../../../utils/requests";
-import Loading from "../Loading";
+import Loading from "../../basics/Loading";
 
 const Number = (props) => {
   // const [data, setData] = useState(false);

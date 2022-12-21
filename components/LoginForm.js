@@ -1,4 +1,4 @@
-import CustomForm from "../molecule/CustomForm";
+import CustomForm from "./basics/CustomForm";
 
 const LoginForm = () => {
   return <></>;

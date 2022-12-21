@@ -1,5 +1,5 @@
 import client from "../utils/prismadb";
-import { DateTime, Duration } from "luxon";
+import { DateTime, Duration, Settings } from "luxon";
 
 export const getMultiData = async (website_id, user_id, indicator) => {
   let clientTable;
@@ -10,7 +10,7 @@ export const getMultiData = async (website_id, user_id, indicator) => {
 
   let chartdata = [];
   const timeunits = await getUserTimerange(user_id);
-  let timerange = Object.values(timeunits.minus)[0];
+  let timerange = Object.values(timeunits.multi)[0];
   let timeunit = timeunits.timeunit;
   if (timeunit === "24" || timeunit === "day") {
     while (timerange >= 0) {
@@ -223,30 +223,13 @@ export const getCompactData = async (website_id, user_id, indicator) => {
   }
 
   if (indicator === "bounce-rate") {
-    const sessions = await client.session
-      .findMany({
-        where: {
-          website_id: parseInt(website_id),
-          updated: {
-            gte: DateTime.now().minus(timeunits.minus).startOf(timeunits.startOf).toISO(),
-          },
-        },
-        select: {
-          _count: {
-            select: {
-              views: true,
-            },
-          },
-        },
-      })
-      .catch((e) => {
-        console.log("ERROR", e);
-      });
-    const bouncers = sessions.filter((session) => session._count.views === 1).length;
-
-    return Math.floor((bouncers / sessions.length) * 100) + "%";
+    return await getBounceRate(website_id, timeunits);
   }
 
+  return await getBasicNumer(website_id, clientTable, timeunits, field);
+};
+
+const getBasicNumer = async (website_id, clientTable, timeunits, field) => {
   return await clientTable
     .count({
       where: {
@@ -261,54 +244,39 @@ export const getCompactData = async (website_id, user_id, indicator) => {
     });
 };
 
-export const getBigChartData = async (website_id, user_id, indicator) => {
-  let clientTable;
-  if (indicator === "country") {
-    clientTable = client.session;
-  }
-  if (!clientTable) return "invalid indicator";
-  const timeunits = await getUserTimerange(user_id);
-
-  let chartdata = [];
-  let data;
-
-  data = await clientTable
-    .groupBy({
-      by: [indicator],
+const getBounceRate = async (website_id, timeunits) => {
+  const sessions = await client.session
+    .findMany({
       where: {
         website_id: parseInt(website_id),
-        created: {
+        updated: {
           gte: DateTime.now().minus(timeunits.minus).startOf(timeunits.startOf).toISO(),
         },
       },
-      _count: {
-        [indicator]: true,
-      },
-      orderBy: {
+      select: {
         _count: {
-          [indicator]: "desc",
+          select: {
+            views: true,
+          },
         },
       },
     })
     .catch((e) => {
       console.log("ERROR", e);
     });
+  const bouncers = sessions.filter((session) => session._count.views === 1).length;
 
-  data.forEach((data) => {
-    chartdata.push({
-      name: data[indicator],
-      value: data._count[indicator],
-    });
-  });
-  return chartdata;
+  return Math.floor((bouncers / sessions.length) * 100) + "%";
 };
 
-export const getSmallTextData = async (website_id, user_id, indicator) => {
-  let clientTable;
+export const getNameValueData = async (website_id, user_id, indicator) => {
+  let clientTable, field;
   if (indicator === "path") {
     clientTable = client.view;
+    field = "created";
   } else {
     clientTable = client.session;
+    field = "updated";
   }
   if (!clientTable) return "invalid indicator";
   const timeunits = await getUserTimerange(user_id);
@@ -321,7 +289,7 @@ export const getSmallTextData = async (website_id, user_id, indicator) => {
       by: [indicator],
       where: {
         website_id: parseInt(website_id),
-        created: {
+        [field]: {
           gte: DateTime.now().minus(timeunits.minus).startOf(timeunits.startOf).toISO(),
         },
       },
@@ -347,7 +315,8 @@ export const getSmallTextData = async (website_id, user_id, indicator) => {
   return chartdata;
 };
 
-export const getLiveData = async (website_id) => {
+export const getLiveData = async (website_id, user_id) => {
+  await getUserTimezone(user_id);
   return await client.session
     .count({
       where: {
@@ -362,7 +331,24 @@ export const getLiveData = async (website_id) => {
     });
 };
 
+const getUserTimezone = async (user_id) => {
+  const timezone = await client.user
+    .findUnique({
+      where: {
+        id: parseInt(user_id),
+      },
+      select: {
+        timezone: true,
+      },
+    })
+    .catch((e) => {
+      console.log("ERROR", e);
+    });
+  Settings.defaultZone = timezone.timezone;
+};
+
 const getUserTimerange = async (user_id) => {
+  await getUserTimezone(user_id);
   const timerange = await client.user
     .findUnique({
       where: {
@@ -375,14 +361,22 @@ const getUserTimerange = async (user_id) => {
     .catch((e) => {
       console.log("ERROR", e);
     });
-  if (timerange.timerange === "year") return { minus: { month: 11 }, startOf: "month", timeunit: timerange.timerange };
-  else if (timerange.timerange === "180") return { minus: { month: 5 }, startOf: "month", timeunit: timerange.timerange };
-  else if (timerange.timerange === "90") return { minus: { days: 90 }, startOf: "month", timeunit: timerange.timerange };
-  else if (timerange.timerange === "month") return { minus: { days: 30 }, startOf: "month", timeunit: timerange.timerange };
-  else if (timerange.timerange === "30") return { minus: { days: 30 }, startOf: "week", timeunit: timerange.timerange };
-  else if (timerange.timerange === "week") return { minus: { days: 6 }, startOf: "week", timeunit: timerange.timerange };
-  else if (timerange.timerange === "7") return { minus: { days: 6 }, startOf: "day", timeunit: timerange.timerange };
-  else if (timerange.timerange === "day") return { minus: { hours: 23 }, startOf: "day", timeunit: timerange.timerange };
-  else if (timerange.timerange === "24") return { minus: { hours: 23 }, startOf: "hour", timeunit: timerange.timerange };
+  if (timerange.timerange === "year")
+    return { multi: { month: 11 }, minus: { month: 11 }, startOf: "month", timeunit: timerange.timerange };
+  else if (timerange.timerange === "180")
+    return { multi: { month: 5 }, minus: { month: 5 }, startOf: "month", timeunit: timerange.timerange };
+  else if (timerange.timerange === "90")
+    return { multi: { days: 90 }, minus: { days: 90 }, startOf: "month", timeunit: timerange.timerange };
+  else if (timerange.timerange === "month")
+    return { multi: { days: 30 }, minus: { days: 0 }, startOf: "month", timeunit: timerange.timerange };
+  else if (timerange.timerange === "30")
+    return { multi: { days: 30 }, minus: { days: 30 }, startOf: "week", timeunit: timerange.timerange };
+  else if (timerange.timerange === "week")
+    return { multi: { days: 6 }, minus: { days: 0 }, startOf: "week", timeunit: timerange.timerange };
+  else if (timerange.timerange === "7") return { multi: { days: 6 }, minus: { days: 6 }, startOf: "day", timeunit: timerange.timerange };
+  else if (timerange.timerange === "day")
+    return { multi: { hours: 23 }, minus: { hours: 0 }, startOf: "day", timeunit: timerange.timerange };
+  else if (timerange.timerange === "24")
+    return { multi: { hours: 23 }, minus: { hours: 23 }, startOf: "hour", timeunit: timerange.timerange };
   return timerange;
 };
