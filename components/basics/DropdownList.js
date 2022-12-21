@@ -10,7 +10,7 @@ const DropdownList = () => {
   const timeranges = [
     { id: 1, name: t("charts.last24"), value: "24", unavailable: false },
     { id: 2, name: t("charts.today"), value: "day", unavailable: false },
-    { id: 3, name: t("charts.lastweek"), value: "7", unavailable: false },
+    { id: 3, name: t("charts.last7"), value: "7", unavailable: false },
     { id: 4, name: t("charts.week"), value: "week", unavailable: false },
     { id: 5, name: t("charts.last30"), value: "30", unavailable: false },
     { id: 6, name: t("charts.month"), value: "month", unavailable: false },
@@ -22,8 +22,6 @@ const DropdownList = () => {
   const [timerange, setTimerange] = useState(timeranges[0]);
   const [user, setUser] = useState([]);
   const { data } = useSession();
-
-  console.log(timeranges.find((item) => item.value === dataCtx.timerange));
 
   useEffect(() => {
     (async () => {

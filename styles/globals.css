@@ -14,7 +14,7 @@
     @apply dark:bg-black bg-white !important;
 }
 .tr-rounded-full {
-    @apply dark:bg-white bg-black !important;
+    /* @apply dark:bg-white bg-black !important; */
 }
 g.recharts-layer.recharts-bar path {
     @apply dark:fill-white fill-black !important;

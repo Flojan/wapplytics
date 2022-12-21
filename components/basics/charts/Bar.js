@@ -34,7 +34,6 @@ const Bar = (props) => {
     }
     return chartdata;
   };
-  console.log("props.data", props);
 
   // if (isLoading) return <Loading />;
   return (

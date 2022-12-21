@@ -10,7 +10,7 @@ export const getMultiData = async (website_id, user_id, indicator) => {
 
   let chartdata = [];
   const timeunits = await getUserTimerange(user_id);
-  let timerange = Object.values(timeunits.multi)[0];
+  let timerange = Object.values(timeunits.multidata)[0];
   let timeunit = timeunits.timeunit;
   if (timeunit === "24" || timeunit === "day") {
     while (timerange >= 0) {
@@ -171,66 +171,19 @@ export const getCompactData = async (website_id, user_id, indicator) => {
     field = "updated";
   }
   if (!clientTable) return "invalid indicator";
-
   const timeunits = await getUserTimerange(user_id);
 
   if (indicator === "avg-visit-time") {
-    const sessions = await client.session
-      .findMany({
-        where: {
-          website_id: parseInt(website_id),
-          updated: {
-            gte: DateTime.now().minus(timeunits.minus).startOf(timeunits.startOf).toISO(),
-          },
-        },
-        select: {
-          views: {
-            where: {
-              created: {
-                gte: DateTime.now().minus(timeunits.minus).startOf(timeunits.startOf).toISO(),
-              },
-            },
-            select: {
-              created: true,
-            },
-          },
-        },
-      })
-      .catch((e) => {
-        console.log("ERROR", e);
-      });
-    if (sessions === undefined || sessions.length === 0) return "0s";
-
-    let visitTimeAllSessions = 0;
-    sessions.forEach((session) => {
-      let visitTimeOneSession = 0;
-      for (let i = 0; i < session.views.length; i++) {
-        if (session.views[i + 1]) {
-          let diffInSeconds = DateTime.fromJSDate(session.views[i + 1].created)
-            .diff(DateTime.fromJSDate(session.views[i].created), ["seconds"])
-            .toObject().seconds;
-          if (diffInSeconds <= 1800) visitTimeOneSession += diffInSeconds;
-        }
-      }
-      visitTimeAllSessions += visitTimeOneSession;
-    });
-    let avg = Duration.fromObject({ seconds: Math.round(visitTimeAllSessions / sessions.length) });
-    avg = avg.shiftTo("hours", "minutes", "seconds").toObject();
-    if (avg.hours) return avg.hours + "h " + avg.minutes + "m " + avg.seconds + "s";
-    else if (avg.minutes) return avg.minutes + "m " + avg.seconds + "s";
-    else if (avg.seconds) return avg.seconds + "s";
-    else return "0s";
+    return await getAvgVisitTime(website_id, timeunits, field);
   }
-
   if (indicator === "bounce-rate") {
-    return await getBounceRate(website_id, timeunits);
+    return await getBounceRate(website_id, timeunits, field);
   }
-
-  return await getBasicNumer(website_id, clientTable, timeunits, field);
+  return await getBasicNumber(website_id, clientTable, timeunits, field);
 };
 
-const getBasicNumer = async (website_id, clientTable, timeunits, field) => {
-  return await clientTable
+const getBasicNumber = async (website_id, clientTable, timeunits, field) => {
+  const number = await clientTable
     .count({
       where: {
         website_id: parseInt(website_id),
@@ -242,14 +195,38 @@ const getBasicNumer = async (website_id, clientTable, timeunits, field) => {
     .catch((e) => {
       console.log("ERROR", e);
     });
+
+  const cmpNumber = await clientTable
+    .count({
+      where: {
+        AND: [
+          {
+            website_id: parseInt(website_id),
+            [field]: {
+              gte: DateTime.now().minus(timeunits.cmp).startOf(timeunits.startOf).toISO(),
+            },
+          },
+          {
+            website_id: parseInt(website_id),
+            [field]: {
+              lte: DateTime.now().minus(timeunits.minus).startOf(timeunits.startOf).toISO(),
+            },
+          },
+        ],
+      },
+    })
+    .catch((e) => {
+      console.log("ERROR", e);
+    });
+  return { number, diff: number - cmpNumber };
 };
 
-const getBounceRate = async (website_id, timeunits) => {
+const getBounceRate = async (website_id, timeunits, field) => {
   const sessions = await client.session
     .findMany({
       where: {
         website_id: parseInt(website_id),
-        updated: {
+        [field]: {
           gte: DateTime.now().minus(timeunits.minus).startOf(timeunits.startOf).toISO(),
         },
       },
@@ -264,9 +241,140 @@ const getBounceRate = async (website_id, timeunits) => {
     .catch((e) => {
       console.log("ERROR", e);
     });
-  const bouncers = sessions.filter((session) => session._count.views === 1).length;
+  let bouncers = sessions.filter((session) => session._count.views === 1).length;
+  bouncers = bouncers !== 0 ? Math.floor((bouncers / sessions.length) * 100) : bouncers;
 
-  return Math.floor((bouncers / sessions.length) * 100) + "%";
+  const cmpsessions = await client.session
+    .findMany({
+      where: {
+        AND: [
+          {
+            website_id: parseInt(website_id),
+            [field]: {
+              gte: DateTime.now().minus(timeunits.cmp).startOf(timeunits.startOf).toISO(),
+            },
+          },
+          {
+            website_id: parseInt(website_id),
+            [field]: {
+              lte: DateTime.now().minus(timeunits.minus).startOf(timeunits.startOf).toISO(),
+            },
+          },
+        ],
+      },
+      select: {
+        _count: {
+          select: {
+            views: true,
+          },
+        },
+      },
+    })
+    .catch((e) => {
+      console.log("ERROR", e);
+    });
+  let cmpbouncers = cmpsessions.filter((session) => session._count.views === 1).length;
+  cmpbouncers = cmpbouncers !== 0 ? Math.floor((cmpbouncers / cmpsessions.length) * 100) : cmpbouncers;
+
+  return { number: bouncers, diff: bouncers - cmpbouncers };
+};
+
+const getAvgVisitTime = async (website_id, timeunits, field) => {
+  const sessions = await client.session
+    .findMany({
+      where: {
+        website_id: parseInt(website_id),
+        [field]: {
+          gte: DateTime.now().minus(timeunits.minus).startOf(timeunits.startOf).toISO(),
+        },
+      },
+      select: {
+        views: {
+          where: {
+            created: {
+              gte: DateTime.now().minus(timeunits.minus).startOf(timeunits.startOf).toISO(),
+            },
+          },
+          select: {
+            created: true,
+          },
+        },
+      },
+    })
+    .catch((e) => {
+      console.log("ERROR", e);
+    });
+  if (sessions === undefined || sessions.length === 0) return "0s";
+
+  let visitTimeAllSessions = 0;
+  sessions.forEach((session) => {
+    let visitTimeOneSession = 0;
+    for (let i = 0; i < session.views.length; i++) {
+      if (session.views[i + 1]) {
+        let diffInSeconds = DateTime.fromJSDate(session.views[i + 1].created)
+          .diff(DateTime.fromJSDate(session.views[i].created), ["seconds"])
+          .toObject().seconds;
+        if (diffInSeconds <= 1800) visitTimeOneSession += diffInSeconds;
+      }
+    }
+    visitTimeAllSessions += visitTimeOneSession;
+  });
+  const avgTime = Math.round(visitTimeAllSessions / sessions.length);
+
+  const cmpsessions = await client.session
+    .findMany({
+      where: {
+        website_id: parseInt(website_id),
+        [field]: {
+          gte: DateTime.now().minus(timeunits.cmp).startOf(timeunits.startOf).toISO(),
+        },
+      },
+      select: {
+        views: {
+          where: {
+            AND: [
+              {
+                website_id: parseInt(website_id),
+                created: {
+                  gte: DateTime.now().minus(timeunits.cmp).startOf(timeunits.startOf).toISO(),
+                },
+              },
+              {
+                website_id: parseInt(website_id),
+                created: {
+                  lte: DateTime.now().minus(timeunits.minus).startOf(timeunits.startOf).toISO(),
+                },
+              },
+            ],
+          },
+          select: {
+            created: true,
+          },
+        },
+      },
+    })
+    .catch((e) => {
+      console.log("ERROR", e);
+    });
+  if (cmpsessions === undefined || cmpsessions.length === 0) return "0s";
+
+  let cmpvisitTimeAllSessions = 0;
+  cmpsessions.forEach((session) => {
+    let visitTimeOneSession = 0;
+    for (let i = 0; i < session.views.length; i++) {
+      if (session.views[i + 1]) {
+        let diffInSeconds = DateTime.fromJSDate(session.views[i + 1].created)
+          .diff(DateTime.fromJSDate(session.views[i].created), ["seconds"])
+          .toObject().seconds;
+        if (diffInSeconds <= 1800) visitTimeOneSession += diffInSeconds;
+      }
+    }
+    cmpvisitTimeAllSessions += visitTimeOneSession;
+  });
+  let cmpavgTime = Math.round(cmpvisitTimeAllSessions / cmpsessions.length);
+  cmpavgTime = avgTime - cmpavgTime;
+
+  return { number: avgTime, diff: cmpavgTime };
 };
 
 export const getNameValueData = async (website_id, user_id, indicator) => {
@@ -362,21 +470,22 @@ const getUserTimerange = async (user_id) => {
       console.log("ERROR", e);
     });
   if (timerange.timerange === "year")
-    return { multi: { month: 11 }, minus: { month: 11 }, startOf: "month", timeunit: timerange.timerange };
+    return { multidata: { month: 11 }, minus: { month: 11 }, cmp: { month: 23 }, startOf: "month", timeunit: timerange.timerange };
   else if (timerange.timerange === "180")
-    return { multi: { month: 5 }, minus: { month: 5 }, startOf: "month", timeunit: timerange.timerange };
+    return { multidata: { month: 5 }, minus: { month: 5 }, cmp: { month: 11 }, startOf: "month", timeunit: timerange.timerange };
   else if (timerange.timerange === "90")
-    return { multi: { days: 90 }, minus: { days: 90 }, startOf: "month", timeunit: timerange.timerange };
+    return { multidata: { days: 90 }, minus: { days: 90 }, cmp: { days: 181 }, startOf: "month", timeunit: timerange.timerange };
   else if (timerange.timerange === "month")
-    return { multi: { days: 30 }, minus: { days: 0 }, startOf: "month", timeunit: timerange.timerange };
+    return { multidata: { days: 30 }, minus: { days: 0 }, cmp: { days: 31 }, startOf: "month", timeunit: timerange.timerange };
   else if (timerange.timerange === "30")
-    return { multi: { days: 30 }, minus: { days: 30 }, startOf: "week", timeunit: timerange.timerange };
+    return { multidata: { days: 30 }, minus: { days: 30 }, cmp: { days: 61 }, startOf: "week", timeunit: timerange.timerange };
   else if (timerange.timerange === "week")
-    return { multi: { days: 6 }, minus: { days: 0 }, startOf: "week", timeunit: timerange.timerange };
-  else if (timerange.timerange === "7") return { multi: { days: 6 }, minus: { days: 6 }, startOf: "day", timeunit: timerange.timerange };
+    return { multidata: { days: 6 }, minus: { days: 0 }, cmp: { days: 7 }, startOf: "week", timeunit: timerange.timerange };
+  else if (timerange.timerange === "7")
+    return { multidata: { days: 6 }, minus: { days: 6 }, cmp: { days: 13 }, startOf: "day", timeunit: timerange.timerange };
   else if (timerange.timerange === "day")
-    return { multi: { hours: 23 }, minus: { hours: 0 }, startOf: "day", timeunit: timerange.timerange };
+    return { multidata: { hours: 23 }, minus: { hours: 0 }, cmp: { hours: 24 }, startOf: "day", timeunit: timerange.timerange };
   else if (timerange.timerange === "24")
-    return { multi: { hours: 23 }, minus: { hours: 23 }, startOf: "hour", timeunit: timerange.timerange };
+    return { multidata: { hours: 23 }, minus: { hours: 23 }, cmp: { hours: 47 }, startOf: "hour", timeunit: timerange.timerange };
   return timerange;
 };
