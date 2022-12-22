@@ -8,8 +8,8 @@
         "admin": "Administrator",
         "website-name": "Website Name",
         "website-url": "Website URL",
-        "tracking-code": "Tracking Code"
-
+        "tracking-code": "Tracking Code",
+        "add-website": "Website hinzufügen"
     },
     "navigation": {
         "overview": "Übersicht",

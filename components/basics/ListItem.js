@@ -2,14 +2,13 @@ import { useTranslation } from "react-i18next";
 import InputField from "./InputField";
 
 const ListItem = (props) => {
-  console.log(window.location.origin);
+  console.log();
   const { t } = useTranslation("common");
   console.log(props);
   if (props.type === "website") {
-    const host = "http://localhost:3000/wapplytics.js";
-    let trackingCode = `<script defer data-identifier="${props.website_nanoid}" src="${host}"></script>`;
+    const scriptPath = `${window.location.origin}/wapplytics.js`;
+    let trackingCode = `<script defer data-identifier="${props.website_nanoid}" src="${scriptPath}"></script>`;
 
-    ('<script defer data-identifier=" + props.website_nanoid + " src="https://wapplytics.example.de/wapplytics.js"></script>');
     return (
       <div className="items-center grid grid-flow-row-dense grid-cols-3 h-10 ">
         <div>

@@ -40,6 +40,18 @@ export function Websites(props) {
         <Head></Head>
         <main className="p-10 xl:p-20">
           <h1 className="text-7xl font-bold">{t("navigation.websites")}</h1>
+          <div className="items-center grid grid-flow-row-dense grid-cols-3 h-10 mt-6 font-questa-bold text-lg">
+            <div>
+              <span>{t("settings.website-name")}</span>
+            </div>
+            <div>
+              <span>{t("settings.website-url")}</span>
+            </div>
+            <div>
+              {" "}
+              <span>{t("settings.tracking-code")}</span>
+            </div>
+          </div>
           {websites.map((website) => (
             <Fragment key={website.id}>
               <ListItem type="website" {...website} />
@@ -66,7 +78,7 @@ export function Websites(props) {
                 placeholder={t("settings.website-url")}
               />
 
-              <PrimaryButton value={t("add-website")}></PrimaryButton>
+              <PrimaryButton value={t("settings.add-website")}></PrimaryButton>
             </div>
           </form>
         </main>
