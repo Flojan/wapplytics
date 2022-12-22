@@ -17,15 +17,11 @@ const Website = (props) => {
   const { t } = useTranslation("common");
   const { dataCtx, isLoading } = useContext(DataContext);
   const [website, setWebsite] = useState();
-  const [timerange, setTimerange] = useState();
-  const [activeTiles, setActiveTiles] = useState();
   const [routerQuery, setRouterQuery] = useState(router.query.websiteid);
   useEffect(() => {
     setRouterQuery(router.query.websiteid);
     if (!isLoading && status === "authenticated") {
       setWebsite(dataCtx.websites.data.find((website) => website.id === parseInt(routerQuery)));
-      // setTimerange(dataCtx.users.data.find((user) => user.username === data.user.username).timerange);
-      // setActiveTiles(JSON.parse(dataCtx.users.data.find((user) => user.username === data.user.username).active_tiles));
     }
   }, [dataCtx, isLoading, routerQuery, router.query.websiteid, data, status]);
 

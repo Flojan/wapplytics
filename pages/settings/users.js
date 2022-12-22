@@ -15,16 +15,13 @@ import Checkbox from "../../components/basics/Checkbox";
 export function Users(props) {
   const { status, data } = useSession();
   const [users, setUsers] = useState([]);
-  const [toggle, setToggle] = useState(false);
   const { t } = useTranslation("common");
   const [user, setUser] = useState({ username: "", password: "", admin: false });
-
-  // const { dataCtx, isLoading } = useContext(DataContext);
   const { dataCtx, isLoading } = useContext(DataContext);
 
   const handleAddUser = async (e) => {
     e.preventDefault();
-    await createWebsite({
+    await createUser({
       username: user.username,
       password: user.password,
       admin: user.admin,
@@ -35,7 +32,6 @@ export function Users(props) {
   useEffect(() => {
     if (!isLoading) setUsers(dataCtx.users.data);
   }, [isLoading, dataCtx.users.data]);
-  console.log(users);
 
   if (isLoading) return <Loading />;
   if (status === "authenticated" && !data.user.admin) return <div className="h-screen">Not authorized</div>;
@@ -50,7 +46,7 @@ export function Users(props) {
               <span>{t("login.username")}</span>
             </div>
             <div>
-              <span>{t("admin")}</span>
+              <span>{t("settings.admin")}</span>
             </div>
             <div></div>
           </div>
@@ -78,12 +74,12 @@ export function Users(props) {
                 placeholder={t("login.password")}
               />
               <Checkbox
-                label={t("admin")}
+                label={t("settings.admin")}
                 checked={user.admin}
                 onChange={(e) => setUser({ ...user, admin: e.target.checked })}
                 type="checkbox"
               />
-              <PrimaryButton value={t("create-user")}></PrimaryButton>
+              <PrimaryButton value={t("settings.create-user")}></PrimaryButton>
             </div>
           </form>
         </main>

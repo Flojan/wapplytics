@@ -30,7 +30,6 @@ export function Websites(props) {
   useEffect(() => {
     if (!isLoading) setWebsites(dataCtx.websites.data);
   }, [isLoading, dataCtx.websites.data]);
-  console.log(websites);
 
   if (isLoading) return <Loading />;
   if (status === "authenticated" && !data.user.admin) return <div className="h-screen">Not authorized</div>;
@@ -48,7 +47,6 @@ export function Websites(props) {
               <span>{t("settings.website-url")}</span>
             </div>
             <div>
-              {" "}
               <span>{t("settings.tracking-code")}</span>
             </div>
           </div>

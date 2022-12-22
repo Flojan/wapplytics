@@ -20,7 +20,6 @@ const DropdownList = () => {
   ];
   const { dataCtx, isLoading } = useContext(DataContext);
   const [timerange, setTimerange] = useState(timeranges[0]);
-  const [user, setUser] = useState([]);
   const { data } = useSession();
 
   useEffect(() => {
@@ -36,12 +35,7 @@ const DropdownList = () => {
         <div className="relative mt-1">
           <Listbox.Button className="relative w-full cursor-default border dark:border-mint rounded-lg py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 sm:text-sm">
             <span className="block truncate">{timerange.name}</span>
-            <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-              {/* <ChevronUpDownIcon
-              className="h-5 w-5 text-gray-400"
-              aria-hidden="true"
-            /> */}
-            </span>
+            <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2"></span>
           </Listbox.Button>
           <Transition as={Fragment} leave="transition ease-in duration-100" leaveFrom="opacity-100" leaveTo="opacity-0">
             <Listbox.Options className="absolute mt-1 max-h-60 w-full dark:bg-black bg-white border dark:border-mint overflow-auto rounded-md py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
@@ -54,15 +48,12 @@ const DropdownList = () => {
                     }`
                   }
                   value={range}
+                  disabled={range.unavailable}
                 >
                   {({ timerange }) => (
                     <>
                       <span className={`block truncate ${timerange ? "font-medium" : "font-normal"}`}>{t(range.name)}</span>
-                      {timerange ? (
-                        <span className="absolute inset-y-0 left-0 flex items-center pl-3">
-                          {/* <CheckIcon className="h-5 w-5" aria-hidden="true" /> */}
-                        </span>
-                      ) : null}
+                      {timerange ? <span className="absolute inset-y-0 left-0 flex items-center pl-3"></span> : null}
                     </>
                   )}
                 </Listbox.Option>

@@ -49,13 +49,27 @@ const getUserByUsername = async (username) => {
 };
 
 export const updateUser = async (props) => {
-  console.log("UPDATE USER", props);
-  return await client.user
-    .update({
-      where: {
-        username: props.data.username,
-      },
-      data: { timerange: props.data.timerange },
-    })
-    .catch((e) => {});
+  if (props.data.timezone) {
+    return await client.user
+      .update({
+        where: {
+          username: props.data.username,
+        },
+        data: { timezone: props.data.timezone },
+      })
+      .catch((e) => {
+        console.log("ERROR", e);
+      });
+  } else {
+    return await client.user
+      .update({
+        where: {
+          username: props.data.username,
+        },
+        data: { timerange: props.data.timerange },
+      })
+      .catch((e) => {
+        console.log("ERROR", e);
+      });
+  }
 };

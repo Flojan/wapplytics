@@ -153,7 +153,7 @@ const Navigation = () => {
         </div>
 
         <div className="flex items-center pl-4 space-x-4 text-lg h-16">
-          <MenuItem href="#profile" icon="user" value={data?.user?.username} />
+          <MenuItem href="/settings/profile" icon="user" value={data?.user?.username} />
         </div>
       </div>
     </div>

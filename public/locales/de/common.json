@@ -9,7 +9,10 @@
         "website-name": "Website Name",
         "website-url": "Website URL",
         "tracking-code": "Tracking Code",
-        "add-website": "Website hinzufügen"
+        "add-website": "Website hinzufügen",
+        "update-profile": "Profil aktualisieren",
+        "timezone": "Zeitzone", 
+        "select-timezone": "Zeitzone auswählen"
     },
     "navigation": {
         "overview": "Übersicht",

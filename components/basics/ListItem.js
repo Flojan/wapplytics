@@ -2,13 +2,10 @@ import { useTranslation } from "react-i18next";
 import InputField from "./InputField";
 
 const ListItem = (props) => {
-  console.log();
   const { t } = useTranslation("common");
-  console.log(props);
   if (props.type === "website") {
     const scriptPath = `${window.location.origin}/wapplytics.js`;
     let trackingCode = `<script defer data-identifier="${props.website_nanoid}" src="${scriptPath}"></script>`;
-
     return (
       <div className="items-center grid grid-flow-row-dense grid-cols-3 h-10 ">
         <div>
@@ -29,7 +26,7 @@ const ListItem = (props) => {
           <span>{props.username}</span>
         </div>
         <div>
-          <span>{props.admin ? t("yes") : t("no")}</span>
+          <span>{props.admin ? t("settings.yes") : t("settings.no")}</span>
         </div>
         <div></div>
       </div>

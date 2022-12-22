@@ -9,8 +9,10 @@
         "website-name": "Website Name",
         "website-url": "Website URL",
         "tracking-code": "Tracking Code",
-        "add-website": "Add Website"
-
+        "add-website": "Add Website",
+        "update-profile": "Update Profile",
+        "timezone": "Timezone",
+        "select-timezone": "Select Timezone"
     },
     "navigation": {
         "overview": "Overview",
