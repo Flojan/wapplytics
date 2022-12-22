@@ -32,7 +32,7 @@ const Navigation = () => {
       <div className="w-full">
         <div className="flex justify-center pb-6 pt-6" id="sidebar-header">
           <Link href="/">
-            <TitleH2 value="Wapplytics" />
+            <TitleH2>Wapplytics</TitleH2>
           </Link>
         </div>
         <nav className="pt-6 pl-4 ">

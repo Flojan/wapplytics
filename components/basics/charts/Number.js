@@ -1,6 +1,7 @@
 import { BadgeDelta, Card, Metric, Text } from "@tremor/react";
 import { Duration } from "luxon";
 import { useTranslation } from "react-i18next";
+import Frame from "../Frame";
 
 const Number = (props) => {
   const { t } = useTranslation("common");
@@ -48,11 +49,12 @@ const Number = (props) => {
     }
   };
   return (
-    <Card key={""} marginTop="">
+    <Frame>
       <Text>{t("charts." + props.indicator)}</Text>
       <Metric>{numberText()}</Metric>
       {diff > 0 && (
         <BadgeDelta
+          className="cmp-badge"
           deltaType={`${props.indicator === "bounce-rate" ? "moderateDecrease" : "moderateIncrease"}`}
           text={diffText()}
           size="sm"
@@ -60,13 +62,14 @@ const Number = (props) => {
       )}
       {diff < 0 && (
         <BadgeDelta
+          className="cmp-badge"
           deltaType={`${props.indicator === "bounce-rate" ? "moderateIncrease" : "moderateDecrease"}`}
           text={diffText()}
           size="sm"
         />
       )}
       {diff === 0 && <BadgeDelta deltaType="unchanged" text={diffText()} size="sm" />}
-    </Card>
+    </Frame>
   );
 };
 

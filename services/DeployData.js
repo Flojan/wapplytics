@@ -304,7 +304,7 @@ const getAvgVisitTime = async (website_id, timeunits, field) => {
     .catch((e) => {
       console.log("ERROR", e);
     });
-  if (sessions === undefined || sessions.length === 0) return "0s";
+  if (sessions === undefined || sessions.length === 0) return { number: 0, diff: 0 };
 
   let visitTimeAllSessions = 0;
   sessions.forEach((session) => {
@@ -356,7 +356,7 @@ const getAvgVisitTime = async (website_id, timeunits, field) => {
     .catch((e) => {
       console.log("ERROR", e);
     });
-  if (cmpsessions === undefined || cmpsessions.length === 0) return "0s";
+  if (cmpsessions === undefined || cmpsessions.length === 0) return { number: avgTime, diff: 0 };
 
   let cmpvisitTimeAllSessions = 0;
   cmpsessions.forEach((session) => {
@@ -371,10 +371,14 @@ const getAvgVisitTime = async (website_id, timeunits, field) => {
     }
     cmpvisitTimeAllSessions += visitTimeOneSession;
   });
-  let cmpavgTime = Math.round(cmpvisitTimeAllSessions / cmpsessions.length);
-  cmpavgTime = avgTime - cmpavgTime;
+  if (website_id === "4") {
+    console.log("🚀 ~ file: DeployData.js:374 ~ cmpsessions.forEach ~ cmpvisitTimeAllSessions", cmpvisitTimeAllSessions);
+    console.log("🚀 ~ file: DeployData.js:378 ~ getAvgVisitTime ~ cmpsessions.length", cmpsessions.length);
+  }
 
-  return { number: avgTime, diff: cmpavgTime };
+  let cmpavgTime = Math.round(cmpvisitTimeAllSessions / cmpsessions.length);
+
+  return { number: avgTime, diff: avgTime - cmpavgTime };
 };
 
 export const getNameValueData = async (website_id, user_id, indicator) => {

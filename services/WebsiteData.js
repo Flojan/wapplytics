@@ -7,16 +7,22 @@ export const getAllWebsiteData = async () => {
       id: true,
       website_url: true,
       website_name: true,
+      website_nanoid: true,
     },
   });
 };
 
-export const createWebsite = async (params) => {
-  return await client.website.create({
-    data: {
-      website_nanoid: generateNanoID(),
-      website_url: params.website_url,
-      website_name: params.website_name,
-    },
-  });
+export const createWebsite = async (props) => {
+  console.log(props);
+  return await client.website
+    .create({
+      data: {
+        website_nanoid: generateNanoID(),
+        website_url: props.website_url,
+        website_name: props.website_name,
+      },
+    })
+    .catch((e) => {
+      console.log("ERROR", e);
+    });
 };

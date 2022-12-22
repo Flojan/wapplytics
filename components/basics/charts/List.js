@@ -1,12 +1,8 @@
-import { BarList, Card, Text } from "@tremor/react";
-import { useEffect, useState } from "react";
+import { BarList, Text } from "@tremor/react";
 import { useTranslation } from "react-i18next";
-import { getData } from "../../../utils/requests";
-import Loading from "../../basics/Loading";
+import Frame from "../Frame";
 
 const List = (props) => {
-  // const [data, setData] = useState(false);
-  // const [isLoading, setLoading] = useState(false);
   const { t } = useTranslation("common");
 
   const chartdatai18n = (data) => {
@@ -23,10 +19,10 @@ const List = (props) => {
   };
 
   return (
-    <Card marginTop="mt-6">
+    <Frame>
       <Text>{t("charts." + props.indicator)}</Text>
       <BarList data={props.i18n ? chartdatai18n(props.data) : props.data} color="slate" showAnimation={true} marginTop="mt-6" />
-    </Card>
+    </Frame>
   );
 };
 

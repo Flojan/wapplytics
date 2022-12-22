@@ -1,6 +1,16 @@
 {
     "test": "Test DE",
     "loading": "Laden ...",
+    "settings": {
+        "yes": "Ja",
+        "no": "Nein",
+        "create-user": "Neuen User erstellen",
+        "admin": "Administrator",
+        "website-name": "Website Name",
+        "website-url": "Website URL",
+        "tracking-code": "Tracking Code"
+
+    },
     "navigation": {
         "overview": "Übersicht",
         "websites": "Websites",

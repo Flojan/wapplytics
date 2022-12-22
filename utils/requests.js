@@ -18,6 +18,17 @@ export const getWebsites = async (props) => {
   return await res.json();
 };
 
+export const createWebsite = async (props) => {
+  const res = await fetch("/api/website/create", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ website_url: props.website_url, website_name: props.website_name }),
+  });
+  return await res.json();
+};
+
 export const getUsers = async (props) => {
   const res = await fetch(`/api/user/`, {
     method: "GET",

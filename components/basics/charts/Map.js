@@ -1,14 +1,11 @@
-import { Card, Text } from "@tremor/react";
-import { useEffect, useState } from "react";
+import { Text } from "@tremor/react";
 import { useTranslation } from "react-i18next";
 import { ComposableMap, Geographies, Geography } from "react-simple-maps";
-import { getData } from "../../../utils/requests";
-import Tile from "../../Tile";
-import Loading from "../../basics/Loading";
+
+import Frame from "../Frame";
+import List from "./List";
 
 const Map = (props) => {
-  // const [data, setData] = useState([]);
-  // const [isLoading, setLoading] = useState(false);
   const { t } = useTranslation("common");
 
   const geoUrl = "/world-map.json";
@@ -17,12 +14,12 @@ const Map = (props) => {
     return data.find((country) => {
       return country.name.toUpperCase() === countryCode["Alpha-2"];
     })
-      ? "#000"
-      : "#ddd";
+      ? "#76d8cf"
+      : "#000";
   }
 
   return (
-    <Card key={""} marginTop="mt-6">
+    <Frame>
       <Text>{t("charts." + props.indicator)}</Text>
       <div className="grid grid-cols-2">
         <ComposableMap
@@ -42,9 +39,9 @@ const Map = (props) => {
             }}
           </Geographies>
         </ComposableMap>
-        <Tile website_id={props.website_id} user_id={props.user_id} tile="smalltext" indicator="country" i18n="true" />
+        <List {...props} />
       </div>
-    </Card>
+    </Frame>
   );
 };
 
