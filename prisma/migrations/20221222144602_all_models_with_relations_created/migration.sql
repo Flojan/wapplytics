@@ -1,32 +1,33 @@
 -- CreateTable
-CREATE TABLE `user` (
+CREATE TABLE `User` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `created` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated` DATETIME(3) NOT NULL,
     `username` VARCHAR(191) NOT NULL,
     `password` VARCHAR(191) NOT NULL,
     `admin` BOOLEAN NOT NULL DEFAULT false,
-    `settings` VARCHAR(191) NOT NULL DEFAULT '{''timezone'':''berlin'',''language'':''en'',''theme'':''dark'',''timerange'':''week''}',
-    `active_tiles` VARCHAR(191) NOT NULL DEFAULT '{''livedata'':''true'',''multidata'':''true'',''bigchart'':''true'',''goal'':''true'',''smalltext'':''true'',''smallchart'':''true''}',
+    `timezone` VARCHAR(191) NOT NULL DEFAULT 'Europe/Berlin',
+    `timerange` VARCHAR(191) NOT NULL DEFAULT 'week',
+    `active_tiles` VARCHAR(191) NOT NULL DEFAULT '{"view":true,"unique-user":true,"avg-visit-time":true,"bounce-rate":true,"country":true,"path":true,"language":true,"browser":true,"os":true,"device":true,"screen":true,"referrer":true}',
 
-    UNIQUE INDEX `user_username_key`(`username`),
+    UNIQUE INDEX `User_username_key`(`username`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `website` (
+CREATE TABLE `Website` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `website_nanoid` VARCHAR(191) NOT NULL,
     `created` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `website_url` VARCHAR(191) NOT NULL,
     `website_name` VARCHAR(191) NOT NULL,
 
-    UNIQUE INDEX `website_website_nanoid_key`(`website_nanoid`),
+    UNIQUE INDEX `Website_website_nanoid_key`(`website_nanoid`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `goal` (
+CREATE TABLE `Goal` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `start` DATETIME(3) NOT NULL,
     `end` DATETIME(3) NOT NULL,
@@ -40,7 +41,7 @@ CREATE TABLE `goal` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `session` (
+CREATE TABLE `Session` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `session_uuid` VARCHAR(191) NOT NULL,
     `created` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -55,12 +56,12 @@ CREATE TABLE `session` (
     `screen` VARCHAR(191) NOT NULL,
     `referrer` VARCHAR(191) NOT NULL,
 
-    UNIQUE INDEX `session_session_uuid_key`(`session_uuid`),
+    UNIQUE INDEX `Session_session_uuid_key`(`session_uuid`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `view` (
+CREATE TABLE `View` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `created` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `session_id` INTEGER NOT NULL,
@@ -71,10 +72,10 @@ CREATE TABLE `view` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
-ALTER TABLE `goal` ADD CONSTRAINT `goal_website_id_fkey` FOREIGN KEY (`website_id`) REFERENCES `website`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Goal` ADD CONSTRAINT `Goal_website_id_fkey` FOREIGN KEY (`website_id`) REFERENCES `Website`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `session` ADD CONSTRAINT `session_website_id_fkey` FOREIGN KEY (`website_id`) REFERENCES `website`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Session` ADD CONSTRAINT `Session_website_id_fkey` FOREIGN KEY (`website_id`) REFERENCES `Website`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `view` ADD CONSTRAINT `view_session_id_fkey` FOREIGN KEY (`session_id`) REFERENCES `session`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `View` ADD CONSTRAINT `View_session_id_fkey` FOREIGN KEY (`session_id`) REFERENCES `Session`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
