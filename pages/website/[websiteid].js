@@ -59,30 +59,31 @@ const Website = (props) => {
 
 export default Website;
 
-const getWebsiteIDs = async () => {
-  const URL = process.env.NEXTAUTH_URL;
-  const res = await fetch(`${URL}/api/website/`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  const websites = await res.json();
+// const getWebsiteIDs = async () => {
+//   const URL = process.env.NEXTAUTH_URL;
+//   const res = await fetch(`${URL}/api/website/`, {
+//     method: "GET",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//   });
+//   const websites = await res.json();
 
-  const ids = websites.data.map((website) => website.id);
-  const idwithlocale = ids.map((id) => nextI18nextConfig.i18n.locales.map((locale) => ({ params: { websiteid: id.toString() }, locale })));
-  return idwithlocale;
-};
+//   const ids = websites.data.map((website) => website.id);
+//   const idwithlocale = ids.map((id) => nextI18nextConfig.i18n.locales.map((locale) => ({ params: { websiteid: id.toString() }, locale })));
+//   return idwithlocale;
+// };
 
-export const getStaticPaths = async ({ locale }) => {
-  const params = await getWebsiteIDs();
-  return {
-    paths: params.flat(),
-    fallback: false,
-  };
-};
+// export const getStaticPaths = async ({ locale }) => {
+//   // const params = await getWebsiteIDs();
+//   return {
+//     // paths: params.flat(),
+//     paths: [],
+//     fallback: false,
+//   };
+// };
 
-export const getStaticProps = async ({ locale }) => ({
+export const getServerSideProps = async ({ locale }) => ({
   props: {
     ...(await serverSideTranslations(locale, ["common"])),
   },
