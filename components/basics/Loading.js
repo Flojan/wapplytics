@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import Label from "../basics/label";
+import Label from "./Label";
 import Spinner from "../basics/Spinner";
 
 const Loading = () => {

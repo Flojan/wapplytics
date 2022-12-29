@@ -1,7 +1,7 @@
 import { Disclosure } from "@headlessui/react";
 import Link from "next/link";
 import Icon from "../basics/CustomIcon";
-import Label from "../basics/label";
+import Label from "./Label";
 
 const MenuItem = (props) => {
   return props.icon ? (
