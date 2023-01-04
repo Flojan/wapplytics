@@ -1,3 +1,7 @@
+## Wapplytics Demo Screen
+
+![Wapplytics Demo Screen](https://github.com/Flojan/wapplytics/blob/main/wapplytics_demo_screen.png)
+
 mysql -h 127.0.0.1 -P 3306 -u <username> -p <databaseName> < sqlfile.sql
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
